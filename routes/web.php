@@ -10,10 +10,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
 Route::get('/admin', [AdminController::class, 'index']);
