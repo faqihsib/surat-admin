@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JenisSuratController extends Controller
 {
@@ -11,28 +12,8 @@ class JenisSuratController extends Controller
      */
     public function index()
     {
-        $jenis_surat = [
-            [
-                'jenis_id' => 1,
-                'kode' => 'SKM',
-                'nama_jenis' => 'Surat Keterangan Miskin',
-                'syarat_json' => 'KTP,KK,Surat Pengantar RT'
-            ],
-            [
-                'jenis_id' => 2,
-                'kode' => 'SKD',
-                'nama_jenis' => 'Surat Keterangan Domisili',
-                'syarat_json' => 'KTP,KK,Bukti Sewa/Kontrak'
-            ],
-            [
-                'jenis_id' => 3,
-                'kode' => 'SKB',
-                'nama_jenis' => 'Surat Keterangan Belum Menikah',
-                'syarat_json' => 'KTP,KK,Surat Pengantar RT'
-            ]
-        ];
-
-        return view('jenis-surat', compact('jenis_surat'));
+        $data['dataJenisSurat'] = DB::table('jenis_surat')->get();
+        return view('jenis-surat', $data);
     }
 
     /**
@@ -48,19 +29,22 @@ class JenisSuratController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi
         $request->validate([
             'kode' => 'required|unique:jenis_surat,kode',
             'nama_jenis' => 'required'
         ]);
 
-        JenisSurat::create([
+        // Simpan data menggunakan Query Builder (bukan Eloquent)
+        DB::table('jenis_surat')->insert([
             'kode' => $request->kode,
             'nama_jenis' => $request->nama_jenis,
-            'syarat_json' => $request->syarat_json
+            'syarat_json' => $request->syarat_json,
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
 
-        return redirect()->route('jenis-surat.index')
-            ->with('success', 'Jenis surat berhasil ditambahkan');
+        return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil ditambahkan!');
     }
 
     /**
@@ -76,14 +60,8 @@ class JenisSuratController extends Controller
      */
     public function edit(string $id)
     {
-        $jenis_surat = [
-            'jenis_id' => $id,
-            'kode' => 'SKM',
-            'nama_jenis' => 'Surat Keterangan Miskin',
-            'syarat_json' => 'KTP,KK,Surat Pengantar RT'
-        ];
-
-        return view('form-jenis-surat', compact('jenis_surat'));
+        $dataJenisSurat = DB::table('jenis_surat')->where('jenis_id', $id)->first();
+        return view('form-jenis-surat', compact('dataJenisSurat'));
     }
 
     /**
@@ -91,20 +69,21 @@ class JenisSuratController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validasi
         $request->validate([
             'kode' => 'required|unique:jenis_surat,kode,' . $id . ',jenis_id',
             'nama_jenis' => 'required'
         ]);
 
-        $jenis_surat = JenisSurat::find($id);
-        $jenis_surat->update([
+        // Update data menggunakan Query Builder (bukan Eloquent)
+        DB::table('jenis_surat')->where('jenis_id', $id)->update([
             'kode' => $request->kode,
             'nama_jenis' => $request->nama_jenis,
-            'syarat_json' => $request->syarat_json
+            'syarat_json' => $request->syarat_json,
+            'updated_at' => now()
         ]);
 
-        return redirect()->route('jenis-surat.index')
-            ->with('success', 'Jenis surat berhasil diupdate');
+        return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil diupdate!');
     }
 
     /**
@@ -112,10 +91,9 @@ class JenisSuratController extends Controller
      */
     public function destroy(string $id)
     {
-        $jenis_surat = JenisSurat::find($id);
-        $jenis_surat->delete();
+        // Hapus data menggunakan Query Builder (bukan Eloquent)
+        DB::table('jenis_surat')->where('jenis_id', $id)->delete();
 
-        return redirect()->route('jenis-surat.index')
-            ->with('success', 'Jenis surat berhasil dihapus');
+        return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil dihapus!');
     }
 }

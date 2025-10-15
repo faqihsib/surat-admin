@@ -48,13 +48,6 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="laporan.html" class='sidebar-link'>
-                        <i data-feather="bar-chart" width="20"></i>
-                        <span>Laporan</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
                     <a href="{{ route('auth.index') }}" class='sidebar-link'>
                         <i data-feather="log-out" width="20"></i>
                         <span>Logout</span>

@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ isset($jenis_surat) ? 'Edit' : 'Tambah' }} Jenis Surat - Layanan Desa</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css')}}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg')}}" type="image/x-icon">
+    <title>{{ isset($dataJenisSurat) ? 'Edit' : 'Tambah' }} Jenis Surat - Layanan Desa</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 </head>
+
 <body>
     <div id="app">
         <!-- Sidebar -->
         <div id="sidebar" class='active'>
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header">
-                    <img src="{{ asset('assets/images/logo.svg')}}" alt="">
+                    <img src="{{ asset('assets/images/logo.svg') }}" alt="">
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
@@ -59,13 +60,27 @@
 
             <div class="main-content container-fluid">
                 <div class="page-title">
-                    <h3>{{ isset($jenis_surat) ? 'Edit' : 'Tambah' }} Jenis Surat</h3>
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-1 order-last">
+                            <h3>{{ isset($dataJenisSurat) ? 'Edit' : 'Tambah' }} Jenis Surat</h3>
+                            <p class="text-subtitle text-muted">Form {{ isset($dataJenisSurat) ? 'edit' : 'tambah' }} jenis surat</p>
+                        </div>
+                        <div class="col-12 col-md-6 order-md-2 order-first">
+                            <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('jenis-surat.index') }}">Jenis Surat</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{ isset($dataJenisSurat) ? 'Edit' : 'Tambah' }}</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
 
-                @if($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
-                            @foreach($errors->all() as $error)
+                            @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
@@ -79,27 +94,33 @@
                         </div>
                         <div class="card-body">
                             <form method="POST"
-                                action="{{ isset($jenis_surat) ? route('jenis-surat.update', $jenis_surat['jenis_id']) : route('jenis-surat.store') }}">
+                                action="{{ isset($dataJenisSurat) ? route('jenis-surat.update', $dataJenisSurat->jenis_id) : route('jenis-surat.store') }}">
                                 @csrf
-                                @if(isset($jenis_surat))
+                                @if (isset($dataJenisSurat))
                                     @method('POST')
                                 @endif
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Kode Surat</label>
-                                            <input type="text" class="form-control" name="kode"
-                                                value="{{ old('kode', $jenis_surat['kode'] ?? '') }}" required
+                                            <label for="kode">Kode Surat</label>
+                                            <input type="text" class="form-control" id="kode" name="kode"
+                                                value="{{ old('kode', $dataJenisSurat->kode ?? '') }}" required
                                                 placeholder="Contoh: SKM, SKD, SKB">
+                                            @error('kode')
+                                                <div class="text-danger small">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Nama Jenis Surat</label>
-                                            <input type="text" class="form-control" name="nama_jenis"
-                                                value="{{ old('nama_jenis', $jenis_surat['nama_jenis'] ?? '') }}" required
-                                                placeholder="Contoh: Surat Keterangan Miskin">
+                                            <label for="nama_jenis">Nama Jenis Surat</label>
+                                            <input type="text" class="form-control" id="nama_jenis" name="nama_jenis"
+                                                value="{{ old('nama_jenis', $dataJenisSurat->nama_jenis ?? '') }}"
+                                                required placeholder="Contoh: Surat Keterangan Miskin">
+                                            @error('nama_jenis')
+                                                <div class="text-danger small">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -107,19 +128,25 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Syarat (pisahkan dengan koma)</label>
-                                            <textarea class="form-control" name="syarat_json"
-                                                placeholder="Contoh: KTP, KK, Surat Pengantar RT">{{ old('syarat_json', $jenis_surat['syarat_json'] ?? '') }}</textarea>
+                                            <label for="syarat_json">Syarat (pisahkan dengan koma)</label>
+                                            <textarea class="form-control" id="syarat_json" name="syarat_json" rows="3"
+                                                placeholder="Contoh: KTP, KK, Surat Pengantar RT">{{ old('syarat_json', $dataJenisSurat->syarat_json ?? '') }}</textarea>
                                             <small class="text-muted">Pisahkan setiap syarat dengan koma</small>
+                                            @error('syarat_json')
+                                                <div class="text-danger small">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ isset($jenis_surat) ? 'Update' : 'Simpan' }}
+                                <div class="form-group mt-4">
+                                    <button type="submit" class="btn btn-primary me-2">
+                                        <i data-feather="{{ isset($dataJenisSurat) ? 'check' : 'save' }}"></i>
+                                        {{ isset($dataJenisSurat) ? 'Update' : 'Simpan' }}
                                     </button>
-                                    <a href="{{ route('jenis-surat.index') }}" class="btn btn-secondary">Batal</a>
+                                    <a href="{{ route('jenis-surat.index') }}" class="btn btn-secondary">
+                                        <i data-feather="arrow-left"></i> Kembali
+                                    </a>
                                 </div>
                             </form>
                         </div>
@@ -129,18 +156,13 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/feather-icons/feather.min.js')}}"></script>
-    <script src="{{ asset('assets/js/app.js')}}"></script>
-    <script src="{{ asset('assets/js/feather-icons/feather.min.js')}}"></script>
-    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-    <script src="{{ asset('assets/js/app.js')}}"></script>
-    <script src="{{ asset('assets/js/main.js')}}"></script>
+    <script src="{{ asset('assets/js/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
 
     <script>
         // Initialize Feather Icons
         feather.replace();
     </script>
 </body>
-</html>
-</body>
+
 </html>

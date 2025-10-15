@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Warga extends Model
 {
-    // Nama tabel (jika berbeda dari nama model)
+    use HasFactory;
+
+    // Nama tabel
     protected $table = 'warga';
 
     // Primary key
     protected $primaryKey = 'warga_id';
 
-    // Kolom yang bisa diisi (mass assignment)
+    // Kolom yang bisa diisi
     protected $fillable = [
         'no_ktp',
         'nama',

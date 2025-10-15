@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WargaController extends Controller
 {
@@ -11,41 +12,8 @@ class WargaController extends Controller
      */
     public function index()
     {
-        // DATA DUMMY SEMENTARA (sebelum migration)
-        $warga = [
-            [
-                'warga_id' => 1,
-                'no_ktp' => '1234567890123456',
-                'nama' => 'Ahmad Santoso',
-                'jenis_kelamin' => 'L',
-                'agama' => 'Islam',
-                'pekerjaan' => 'Wiraswasta',
-                'telp' => '081234567890',
-                'email' => 'ahmad@example.com'
-            ],
-            [
-                'warga_id' => 2,
-                'no_ktp' => '1234567890123457',
-                'nama' => 'Siti Rahayu',
-                'jenis_kelamin' => 'P',
-                'agama' => 'Islam',
-                'pekerjaan' => 'Ibu Rumah Tangga',
-                'telp' => '081234567891',
-                'email' => 'siti@example.com'
-            ],
-            [
-                'warga_id' => 3,
-                'no_ktp' => '1234567890123458',
-                'nama' => 'Budi Pratama',
-                'jenis_kelamin' => 'L',
-                'agama' => 'Kristen',
-                'pekerjaan' => 'PNS',
-                'telp' => '081234567892',
-                'email' => 'budi@example.com'
-            ]
-        ];
-
-        return view('data-warga', compact('warga'));
+        $data['dataWarga'] = DB::table('warga')->get();
+        return view('data-warga', $data);
     }
 
     /**
@@ -61,6 +29,7 @@ class WargaController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi
         $request->validate([
             'no_ktp' => 'required|unique:warga,no_ktp',
             'nama' => 'required',
@@ -71,10 +40,20 @@ class WargaController extends Controller
             'email' => 'required|email'
         ]);
 
-        Warga::create($request->all());
+        // Simpan data menggunakan Query Builder (bukan Eloquent)
+        DB::table('warga')->insert([
+            'no_ktp' => $request->no_ktp,
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'agama' => $request->agama,
+            'pekerjaan' => $request->pekerjaan,
+            'telp' => $request->telp,
+            'email' => $request->email,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
 
-        return redirect()->route('warga.index')
-            ->with('success', 'Data warga berhasil ditambahkan');
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan!');
     }
 
     /**
@@ -90,17 +69,7 @@ class WargaController extends Controller
      */
     public function edit(string $id)
     {
-        $warga = [
-            'warga_id' => $id,
-            'no_ktp' => '1234567890123456',
-            'nama' => 'Warga Contoh',
-            'jenis_kelamin' => 'L',
-            'agama' => 'Islam',
-            'pekerjaan' => 'Contoh Pekerjaan',
-            'telp' => '081234567890',
-            'email' => 'contoh@example.com'
-        ];
-
+        $warga = DB::table('warga')->where('warga_id', $id)->first();
         return view('form-warga', compact('warga'));
     }
 
@@ -109,6 +78,7 @@ class WargaController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validasi
         $request->validate([
             'no_ktp' => 'required|unique:warga,no_ktp,' . $id . ',warga_id',
             'nama' => 'required',
@@ -119,11 +89,19 @@ class WargaController extends Controller
             'email' => 'required|email'
         ]);
 
-        $warga = Warga::find($id);
-        $warga->update($request->all());
+        // Update data menggunakan Query Builder (bukan Eloquent)
+        DB::table('warga')->where('warga_id', $id)->update([
+            'no_ktp' => $request->no_ktp,
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'agama' => $request->agama,
+            'pekerjaan' => $request->pekerjaan,
+            'telp' => $request->telp,
+            'email' => $request->email,
+            'updated_at' => now()
+        ]);
 
-        return redirect()->route('warga.index')
-            ->with('success', 'Data warga berhasil diupdate');
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil diupdate!');
     }
 
     /**
@@ -131,10 +109,9 @@ class WargaController extends Controller
      */
     public function destroy(string $id)
     {
-        $warga = Warga::find($id);
-        $warga->delete();
+        // Hapus data menggunakan Query Builder (bukan Eloquent)
+        DB::table('warga')->where('warga_id', $id)->delete();
 
-        return redirect()->route('warga.index')
-            ->with('success', 'Data warga berhasil dihapus');
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil dihapus!');
     }
 }

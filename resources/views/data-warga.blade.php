@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/simple-datatables/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon">
 </head>
 
 <body>
@@ -124,22 +125,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($warga as $item)
+                                    @foreach ($dataWarga as $item)
                                         <tr>
-                                            <td>{{ $item['no_ktp'] }}</td>
-                                            <td>{{ $item['nama'] }}</td>
-                                            <td>{{ $item['jenis_kelamin'] == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
-                                            <td>{{ $item['agama'] }}</td>
-                                            <td>{{ $item['telp'] }}</td>
+                                            <td>{{ $item->no_ktp }}</td>
+                                            <td>{{ $item->nama }}</td>
+                                            <td>{{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                            <td>{{ $item->agama }}</td>
+                                            <td>{{ $item->telp }}</td>
                                             <td>
-                                                <a href="{{ route('warga.edit', $item['warga_id']) }}"
+                                                <a href="{{ route('warga.edit', $item->warga_id) }}"
                                                     class="btn btn-sm btn-warning">
-                                                    Edit
+                                                    <i data-feather="edit"></i> Edit
                                                 </a>
-                                                <a href="{{ route('warga.destroy', $item['warga_id']) }}"
+                                                <a href="{{ route('warga.destroy', $item->warga_id) }}"
                                                     class="btn btn-sm btn-danger"
                                                     onclick="return confirm('Yakin ingin menghapus?')">
-                                                    Hapus
+                                                    <i data-feather="trash"></i> Hapus
                                                 </a>
                                             </td>
                                         </tr>
@@ -161,14 +162,14 @@
         let table1 = document.querySelector('#table1');
         let dataTable = new simpleDatatables.DataTable(table1);
     </script>
-        <script src="{{ asset('assets/js/feather-icons/feather.min.js')}}"></script>
-    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-    <script src="{{ asset('assets/js/app.js')}}"></script>
+    <script src="{{ asset('assets/js/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
 
-    <script src="{{ asset('assets/vendors/simple-datatables/simple-datatables.js')}}"></script>
-    <script src="{{ asset('assets/js/vendors.js')}}"></script>
+    <script src="{{ asset('assets/vendors/simple-datatables/simple-datatables.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors.js') }}"></script>
 
-    <script src="{{ asset('assets/js/main.js')}}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <script>
         // Simple Datatable
@@ -179,6 +180,7 @@
         feather.replace();
     </script>
 </body>
+
 </html>
 </body>
 

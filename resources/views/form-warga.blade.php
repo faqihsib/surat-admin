@@ -78,7 +78,7 @@
                         </div>
                         <div class="card-body">
                             <form method="POST"
-                                action="{{ isset($warga) ? route('warga.update', $warga['warga_id']) : route('warga.store') }}">
+                                action="{{ isset($warga) ? route('warga.update', $warga->warga_id) : route('warga.store') }}">
                                 @csrf
                                 @if(isset($warga))
                                     @method('POST')
@@ -89,7 +89,7 @@
                                         <div class="form-group">
                                             <label>No. KTP</label>
                                             <input type="text" class="form-control" name="no_ktp"
-                                                value="{{ old('no_ktp', $warga['no_ktp'] ?? '') }}" required
+                                                value="{{ old('no_ktp', $warga->no_ktp ?? '') }}" required
                                                 maxlength="16" placeholder="16 digit angka">
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@
                                         <div class="form-group">
                                             <label>Nama Lengkap</label>
                                             <input type="text" class="form-control" name="nama"
-                                                value="{{ old('nama', $warga['nama'] ?? '') }}" required>
+                                                value="{{ old('nama', $warga->nama ?? '') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -108,8 +108,8 @@
                                             <label>Jenis Kelamin</label>
                                             <select class="form-control" name="jenis_kelamin" required>
                                                 <option value="">Pilih</option>
-                                                <option value="L" {{ (old('jenis_kelamin', $warga['jenis_kelamin'] ?? '') == 'L') ? 'selected' : '' }}>Laki-laki</option>
-                                                <option value="P" {{ (old('jenis_kelamin', $warga['jenis_kelamin'] ?? '') == 'P') ? 'selected' : '' }}>Perempuan</option>
+                                                <option value="L" {{ (old('jenis_kelamin', $warga->jenis_kelamin ?? '') == 'L') ? 'selected' : '' }}>Laki-laki</option>
+                                                <option value="P" {{ (old('jenis_kelamin', $warga->jenis_kelamin ?? '') == 'P') ? 'selected' : '' }}>Perempuan</option>
                                             </select>
                                         </div>
                                     </div>
@@ -117,7 +117,7 @@
                                         <div class="form-group">
                                             <label>Agama</label>
                                             <input type="text" class="form-control" name="agama"
-                                                value="{{ old('agama', $warga['agama'] ?? '') }}" required>
+                                                value="{{ old('agama', $warga->agama ?? '') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -127,14 +127,14 @@
                                         <div class="form-group">
                                             <label>Pekerjaan</label>
                                             <input type="text" class="form-control" name="pekerjaan"
-                                                value="{{ old('pekerjaan', $warga['pekerjaan'] ?? '') }}" required>
+                                                value="{{ old('pekerjaan', $warga->pekerjaan ?? '') }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Telepon</label>
                                             <input type="text" class="form-control" name="telp"
-                                                value="{{ old('telp', $warga['telp'] ?? '') }}" required>
+                                                value="{{ old('telp', $warga->telp ?? '') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +144,7 @@
                                         <div class="form-group">
                                             <label>Email</label>
                                             <input type="email" class="form-control" name="email"
-                                                value="{{ old('email', $warga['email'] ?? '') }}" required>
+                                                value="{{ old('email', $warga->email ?? '') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -165,15 +165,10 @@
 
     <script src="{{ asset('assets/js/feather-icons/feather.min.js')}}"></script>
     <script src="{{ asset('assets/js/app.js')}}"></script>
-    <script src="{{ asset('assets/js/feather-icons/feather.min.js')}}"></script>
-    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-    <script src="{{ asset('assets/js/app.js')}}"></script>
-    <script src="{{ asset('assets/js/main.js')}}"></script>
+
     <script>
         // Initialize Feather Icons
         feather.replace();
     </script>
-</body>
-</html>
 </body>
 </html>

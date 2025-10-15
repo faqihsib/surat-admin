@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jenis Surat - Layanan Desa</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/simple-datatables/style.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css')}}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg')}}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/simple-datatables/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon">
 </head>
+
 <body>
     <div id="app">
         <!-- Sidebar -->
         <div id="sidebar" class='active'>
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header">
-                    <img src="{{ asset('assets/images/logo.svg')}}" alt="">
+                    <img src="{{ asset('assets/images/logo.svg') }}" alt="">
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
@@ -38,6 +40,12 @@
                                 <i data-feather="file-text" width="20"></i>
                                 <span>Jenis Surat</span>
                             </a>
+                        <li class="sidebar-item">
+                            <a href="{{ route('auth.index') }}" class='sidebar-link'>
+                                <i data-feather="log-out" width="20"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
                         </li>
                     </ul>
                 </div>
@@ -77,7 +85,7 @@
                     </div>
                 </div>
 
-                @if(session('success'))
+                @if (session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
@@ -101,21 +109,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($jenis_surat as $item)
-                                    <tr>
-                                        <td>{{ $item['kode'] }}</td>
-                                        <td>{{ $item['nama_jenis'] }}</td>
-                                        <td>{{ $item['syarat_json'] }}</td>
-                                        <td>
-                                            <a href="{{ route('jenis-surat.edit', $item['jenis_id']) }}" class="btn btn-sm btn-warning">
-                                                Edit
-                                            </a>
-                                            <a href="{{ route('jenis-surat.destroy', $item['jenis_id']) }}" class="btn btn-sm btn-danger"
-                                               onclick="return confirm('Yakin ingin menghapus?')">
-                                                Hapus
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    @foreach ($dataJenisSurat as $item)
+                                        <tr>
+                                            <td>{{ $item->kode }}</td>
+                                            <td>{{ $item->nama_jenis }}</td>
+                                            <td>{{ $item->syarat_json }}</td>
+                                            <td>
+                                                <a href="{{ route('jenis-surat.edit', $item->jenis_id) }}"
+                                                    class="btn btn-sm btn-warning">
+                                                    <i data-feather="edit"></i> Edit
+                                                </a>
+                                                <a href="{{ route('jenis-surat.destroy', $item->jenis_id) }}"
+                                                    class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Yakin ingin menghapus?')">
+                                                    <i data-feather="trash"></i> Hapus
+                                                </a>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -126,22 +136,22 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/feather-icons/feather.min.js')}}"></script>
-    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-    <script src="{{ asset('assets/js/app.js')}}"></script>
-    <script src="{{ asset('assets/vendors/simple-datatables/simple-datatables.js')}}"></script>
+    <script src="{{ asset('assets/js/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/vendors/simple-datatables/simple-datatables.js') }}"></script>
     <script>
         let table1 = document.querySelector('#table1');
         let dataTable = new simpleDatatables.DataTable(table1);
     </script>
-        <script src="{{ asset('assets/js/feather-icons/feather.min.js')}}"></script>
-    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-    <script src="{{ asset('assets/js/app.js')}}"></script>
+    <script src="{{ asset('assets/js/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
 
-    <script src="{{ asset('assets/vendors/simple-datatables/simple-datatables.js')}}"></script>
-    <script src="{{ asset('assets/js/vendors.js')}}"></script>
+    <script src="{{ asset('assets/vendors/simple-datatables/simple-datatables.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors.js') }}"></script>
 
-    <script src="{{ asset('assets/js/main.js')}}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <script>
         // Simple Datatable
@@ -152,6 +162,8 @@
         feather.replace();
     </script>
 </body>
+
 </html>
 </body>
+
 </html>
