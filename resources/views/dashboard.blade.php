@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Admin Desa</title>
-
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css')}}">
-
     <link rel="stylesheet" href="{{ asset('assets/vendors/chartjs/Chart.min.css')}}">
-
     <link rel="stylesheet" href="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css')}}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg')}}" type="image/x-icon">
@@ -29,7 +26,7 @@
 
 
                 <li class="sidebar-item active ">
-                    <a href="index.html" class='sidebar-link'>
+                    <a href="{{ route('admin.index') }}" class='sidebar-link'>
                         <i data-feather="home" width="20"></i>
                         <span>Dashboard</span>
                     </a>
@@ -37,14 +34,14 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="data-warga.html" class='sidebar-link'>
+                    <a href="{{ route('warga.index') }}" class='sidebar-link'>
                         <i data-feather="users" width="20"></i>
                         <span>Data Warga</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="permohonan-surat.html" class='sidebar-link'>
+                    <a href="{{ route('jenis-surat.index') }}" class='sidebar-link'>
                         <i data-feather="file-text" width="20"></i>
                         <span>Permohonan Surat</span>
                     </a>
@@ -140,7 +137,7 @@
 <div class="main-content container-fluid">
     <div class="page-title">
         <h3>Dashboard Admin Desa</h3>
-        <p class="text-subtitle text-muted">A good dashboard to display your statistics</p>
+        <p class="text-subtitle text-muted">Halo! Selamat datang admin!!</p>
     </div>
     <section class="section">
         <div class="row mb-2">
