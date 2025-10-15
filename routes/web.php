@@ -1,10 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
-
-//saya faqih
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,4 +17,5 @@ Route::post('/auth/store', [AuthController::class, 'store'])->name('auth.store')
 
 // Route untuk dashboard admin
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
+
 
