@@ -90,7 +90,7 @@
                         {{ session('success') }}
                     </div>
                 @endif
-
+                @csrf
                 <section class="section">
                     <div class="card">
                         <div class="card-header">
@@ -147,7 +147,6 @@
     <script src="{{ asset('assets/js/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
-
     <script src="{{ asset('assets/vendors/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('assets/js/vendors.js') }}"></script>
 

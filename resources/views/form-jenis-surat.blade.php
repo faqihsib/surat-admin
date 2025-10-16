@@ -63,14 +63,17 @@
                     <div class="row">
                         <div class="col-12 col-md-6 order-md-1 order-last">
                             <h3>{{ isset($dataJenisSurat) ? 'Edit' : 'Tambah' }} Jenis Surat</h3>
-                            <p class="text-subtitle text-muted">Form {{ isset($dataJenisSurat) ? 'edit' : 'tambah' }} jenis surat</p>
+                            <p class="text-subtitle text-muted">Form {{ isset($dataJenisSurat) ? 'edit' : 'tambah' }}
+                                jenis surat</p>
                         </div>
                         <div class="col-12 col-md-6 order-md-2 order-first">
                             <nav aria-label="breadcrumb" class='breadcrumb-header'>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('jenis-surat.index') }}">Jenis Surat</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">{{ isset($dataJenisSurat) ? 'Edit' : 'Tambah' }}</li>
+                                    <li class="breadcrumb-item"><a href="{{ route('jenis-surat.index') }}">Jenis
+                                            Surat</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">
+                                        {{ isset($dataJenisSurat) ? 'Edit' : 'Tambah' }}</li>
                                 </ol>
                             </nav>
                         </div>
@@ -117,7 +120,8 @@
                                             <label for="nama_jenis">Nama Jenis Surat</label>
                                             <input type="text" class="form-control" id="nama_jenis" name="nama_jenis"
                                                 value="{{ old('nama_jenis', $dataJenisSurat->nama_jenis ?? '') }}"
-                                                required placeholder="Contoh: Surat Keterangan Miskin">
+                                                required>
+                                            required placeholder="Contoh: Surat Keterangan Miskin">
                                             @error('nama_jenis')
                                                 <div class="text-danger small">{{ $message }}</div>
                                             @enderror

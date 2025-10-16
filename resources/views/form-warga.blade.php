@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ isset($warga) ? 'Edit' : 'Tambah' }} Warga - Layanan Desa</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 </head>
+
 <body>
     <div id="app">
         <!-- Sidebar -->
         <div id="sidebar" class='active'>
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header">
-                    <img src="{{ asset('assets/images/logo.svg')}}" alt="">
+                    <img src="{{ asset('assets/images/logo.svg') }}" alt="">
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
@@ -61,10 +63,10 @@
                     <h3>{{ isset($warga) ? 'Edit' : 'Tambah' }} Data Warga</h3>
                 </div>
 
-                @if($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
-                            @foreach($errors->all() as $error)
+                            @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
@@ -80,7 +82,7 @@
                             <form method="POST"
                                 action="{{ isset($warga) ? route('warga.update', $warga->warga_id) : route('warga.store') }}">
                                 @csrf
-                                @if(isset($warga))
+                                @if (isset($warga))
                                     @method('POST')
                                 @endif
 
@@ -89,7 +91,7 @@
                                         <div class="form-group">
                                             <label>No. KTP</label>
                                             <input type="text" class="form-control" name="no_ktp"
-                                                value="{{ old('no_ktp', $warga->no_ktp ?? '') }}" required
+                                                value="{{ old('no_ktp', $dataWarga->no_ktp ?? '') }}" required
                                                 maxlength="16" placeholder="16 digit angka">
                                         </div>
                                     </div>
@@ -97,7 +99,7 @@
                                         <div class="form-group">
                                             <label>Nama Lengkap</label>
                                             <input type="text" class="form-control" name="nama"
-                                                value="{{ old('nama', $warga->nama ?? '') }}" required>
+                                                value="{{ old('nama', $dataWarga->nama ?? '') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -108,8 +110,12 @@
                                             <label>Jenis Kelamin</label>
                                             <select class="form-control" name="jenis_kelamin" required>
                                                 <option value="">Pilih</option>
-                                                <option value="L" {{ (old('jenis_kelamin', $warga->jenis_kelamin ?? '') == 'L') ? 'selected' : '' }}>Laki-laki</option>
-                                                <option value="P" {{ (old('jenis_kelamin', $warga->jenis_kelamin ?? '') == 'P') ? 'selected' : '' }}>Perempuan</option>
+                                                <option value="L"
+                                                    {{ old('jenis_kelamin', $dataWarga->jenis_kelamin ?? '') == 'L' ? 'selected' : '' }}>
+                                                    Laki-laki</option>
+                                                <option value="P"
+                                                    {{ old('jenis_kelamin', $dataWarga->jenis_kelamin ?? '') == 'P' ? 'selected' : '' }}>
+                                                    Perempuan</option>
                                             </select>
                                         </div>
                                     </div>
@@ -117,7 +123,7 @@
                                         <div class="form-group">
                                             <label>Agama</label>
                                             <input type="text" class="form-control" name="agama"
-                                                value="{{ old('agama', $warga->agama ?? '') }}" required>
+                                                value="{{ old('agama', $dataWarga->agama ?? '') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -127,14 +133,14 @@
                                         <div class="form-group">
                                             <label>Pekerjaan</label>
                                             <input type="text" class="form-control" name="pekerjaan"
-                                                value="{{ old('pekerjaan', $warga->pekerjaan ?? '') }}" required>
+                                                value="{{ old('pekerjaan', $dataWarga->pekerjaan ?? '') }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Telepon</label>
                                             <input type="text" class="form-control" name="telp"
-                                                value="{{ old('telp', $warga->telp ?? '') }}" required>
+                                                value="{{ old('telp', $dataWarga->telp ?? '') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +150,7 @@
                                         <div class="form-group">
                                             <label>Email</label>
                                             <input type="email" class="form-control" name="email"
-                                                value="{{ old('email', $warga->email ?? '') }}" required>
+                                                value="{{ old('email', $dataWarga->email ?? '') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -163,12 +169,13 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/feather-icons/feather.min.js')}}"></script>
-    <script src="{{ asset('assets/js/app.js')}}"></script>
+    <script src="{{ asset('assets/js/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
 
     <script>
         // Initialize Feather Icons
         feather.replace();
     </script>
 </body>
+
 </html>

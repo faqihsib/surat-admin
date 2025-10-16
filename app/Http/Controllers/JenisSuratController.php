@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisSurat;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class JenisSuratController extends Controller
 {
@@ -12,7 +12,7 @@ class JenisSuratController extends Controller
      */
     public function index()
     {
-        $data['dataJenisSurat'] = DB::table('jenis_surat')->get();
+        $data['dataJenisSurat'] = JenisSurat::all();
         return view('jenis-surat', $data);
     }
 
@@ -29,20 +29,16 @@ class JenisSuratController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi
         $request->validate([
             'kode' => 'required|unique:jenis_surat,kode',
             'nama_jenis' => 'required'
         ]);
 
-        // Simpan data menggunakan Query Builder (bukan Eloquent)
-        DB::table('jenis_surat')->insert([
-            'kode' => $request->kode,
-            'nama_jenis' => $request->nama_jenis,
-            'syarat_json' => $request->syarat_json,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        $data['kode'] = $request->kode;
+        $data['nama_jenis'] = $request->nama_jenis;
+        $data['syarat_json'] = $request->syarat_json;
+
+        JenisSurat::create($data);
 
         return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil ditambahkan!');
     }
@@ -60,8 +56,8 @@ class JenisSuratController extends Controller
      */
     public function edit(string $id)
     {
-        $dataJenisSurat = DB::table('jenis_surat')->where('jenis_id', $id)->first();
-        return view('form-jenis-surat', compact('dataJenisSurat'));
+        $data['dataJenisSurat'] = JenisSurat::findOrFail($id);
+        return view('form-jenis-surat', $data);
     }
 
     /**
@@ -69,20 +65,19 @@ class JenisSuratController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validasi
+        $jenis_id = $id;
+        $dataJenisSurat = JenisSurat::findOrFail($jenis_id);
+
         $request->validate([
             'kode' => 'required|unique:jenis_surat,kode,' . $id . ',jenis_id',
             'nama_jenis' => 'required'
         ]);
 
-        // Update data menggunakan Query Builder (bukan Eloquent)
-        DB::table('jenis_surat')->where('jenis_id', $id)->update([
-            'kode' => $request->kode,
-            'nama_jenis' => $request->nama_jenis,
-            'syarat_json' => $request->syarat_json,
-            'updated_at' => now()
-        ]);
+        $dataJenisSurat->kode = $request->kode;
+        $dataJenisSurat->nama_jenis = $request->nama_jenis;
+        $dataJenisSurat->syarat_json = $request->syarat_json;
 
+        $dataJenisSurat->save();
         return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil diupdate!');
     }
 
@@ -91,8 +86,8 @@ class JenisSuratController extends Controller
      */
     public function destroy(string $id)
     {
-        // Hapus data menggunakan Query Builder (bukan Eloquent)
-        DB::table('jenis_surat')->where('jenis_id', $id)->delete();
+        $jenisSurat = JenisSurat::findOrFail($id);
+        $jenisSurat->delete();
 
         return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil dihapus!');
     }
