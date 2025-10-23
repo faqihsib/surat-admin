@@ -2,80 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display login page
      */
     public function index()
     {
-        return view('auth.login-form');
+        return view('auth.login');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Process login
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function login(Request $request)
     {
         //dd($request->all());
 
-
-        $request->validate([
-            'username'  => 'required|max:10',
-            'password' => 'required|min:3|regex:/[A-Z]/',
-        ], [
-            'username.required' => 'Username tidak boleh kosong',
-            'username.max' => 'Username maksimal 20 karakter',
-            'password.required' => 'Password tidak boleh kosong',
-            'password.min' => 'Password minimal 3 karakter',
-            'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital'
-        ]);
-
-        $data['username'] = $request->username;
+        $data['email'] = $request->email;
         $data['password'] = $request->password;
 
-        return view('home-question-respon', $data);
+        $user = User::where('email', $data['email'])->first();
+
+        if ($user && Hash::check($data['password'], $user->password)) {
+            return redirect()->route('admin.index')->with('success', 'Login Berhasil!');
+        } else {
+            return redirect()->route('auth.index')->with('error', 'Email atau Password Salah!');
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Display register page
      */
-    public function show(string $id)
+    public function showRegister()
     {
-        //
+        return view('auth.register');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Process register
      */
-    public function edit(string $id)
+    public function register(Request $request)
     {
-        //
+        //dd($request->all());
+
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['password'] = Hash::make($request->password);
+
+        User::create($data);
+
+        return redirect()->route('auth.index')->with('success', 'Registrasi Berhasil! Silakan Login.');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Process logout
      */
-    public function update(Request $request, string $id)
+    public function logout()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('auth.index')->with('success', 'Logout Berhasil!');
     }
 }

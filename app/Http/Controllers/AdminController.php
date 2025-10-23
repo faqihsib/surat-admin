@@ -19,7 +19,7 @@ class AdminController extends Controller
             'permohonan_selesai' => 32,
         ];
 
-        return view('dashboard', $data);
+        return view('admin.dashboard', $data);
     }
 
     /**
