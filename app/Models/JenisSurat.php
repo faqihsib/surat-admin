@@ -16,6 +16,7 @@ class JenisSurat extends Model
     protected $fillable = [
         'kode',
         'nama_jenis',
-        'syarat_json'
+        'syarat_json',
+        'status'
     ];
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('kode', 10)->unique();
             $table->string('nama_jenis', 100);
             $table->text('syarat_json')->nullable();
+            $table->enum('status', ['diajukan', 'diproess', 'selesai'])->default('diproses');
             $table->timestamps();
         });
     }

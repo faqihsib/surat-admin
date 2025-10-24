@@ -31,12 +31,14 @@ class JenisSuratController extends Controller
     {
         $request->validate([
             'kode' => 'required|unique:jenis_surat,kode',
-            'nama_jenis' => 'required'
+            'nama_jenis' => 'required',
+            'status' => 'required'
         ]);
 
         $data['kode'] = $request->kode;
         $data['nama_jenis'] = $request->nama_jenis;
         $data['syarat_json'] = $request->syarat_json;
+        $data['status'] = $request->status;
 
         JenisSurat::create($data);
 
@@ -70,12 +72,14 @@ class JenisSuratController extends Controller
 
         $request->validate([
             'kode' => 'required|unique:jenis_surat,kode,' . $id . ',jenis_id',
-            'nama_jenis' => 'required'
+            'nama_jenis' => 'required',
+            'status' => 'required'
         ]);
 
         $dataJenisSurat->kode = $request->kode;
         $dataJenisSurat->nama_jenis = $request->nama_jenis;
         $dataJenisSurat->syarat_json = $request->syarat_json;
+        $dataJenisSurat->status = $request->status;
 
         $dataJenisSurat->save();
         return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil diupdate!');
