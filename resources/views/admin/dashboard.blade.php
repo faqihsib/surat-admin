@@ -40,6 +40,12 @@
                                 <span>Jenis Surat</span>
                             </a>
                         </li>
+                        <li class="sidebar-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                            <a href="{{ route('user.index') }}" class='sidebar-link'>
+                                <i data-feather="user" width="20"></i>
+                                <span>Data User</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item">
                             <form method="POST" action="{{ route('auth.logout') }}" id="logout-form" class="d-none">
                                 @csrf
@@ -98,7 +104,8 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>
-                                <a class="dropdown-item active" href="#"><i data-feather="mail"></i> Messages</a>
+                                <a class="dropdown-item active" href="#"><i data-feather="mail"></i>
+                                    Messages</a>
                                 <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#"><i data-feather="log-out"></i> Logout</a>

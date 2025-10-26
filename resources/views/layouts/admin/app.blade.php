@@ -25,9 +25,18 @@
     @include('layouts.admin.js')
 
     <script>
+        // Inisialisasi DataTable hanya jika tabel ada
         let table1 = document.querySelector('#table1');
-        let dataTable = new simpleDatatables.DataTable(table1);
-        feather.replace();
+        if (table1) {
+            let dataTable = new simpleDatatables.DataTable(table1);
+        }
+
+        // Pastikan feather icons selalu di-load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        });
     </script>
 </body>
 </html>
