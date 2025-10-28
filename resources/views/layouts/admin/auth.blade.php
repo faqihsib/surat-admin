@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,41 +18,52 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-image: url('assets/images/auth.jpg');
         }
+
         .auth-card {
             background: white;
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
         }
+
         .auth-header {
             text-align: center;
             padding: 2rem 1rem 1rem;
         }
+
         .auth-logo {
             width: 80px;
             margin-bottom: 1rem;
         }
+
         .auth-body {
             padding: 1rem 2rem 2rem;
         }
+
+        body {
+            background-image: url('public/assets/images/background/auth.jpg');
+            background-size: cover;
+            background-position: center;
+        }
     </style>
 </head>
+
 <body>
     <div class="auth-container">
         <div class="auth-card">
             {{-- start header --}}
             <div class="auth-header">
-                <img src="{{ asset('assets/images/logo.svg') }}" alt="Logo" class="auth-logo">
-                <h4>@yield('page-title', 'Login')</h4>
-                <p class="text-muted">@yield('page-subtitle', 'Silakan masuk ke akun Anda')</p>
+                <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="auth-logo">
+                <h4>@yield('page-title', 'Login Administrasi Desa')</h4>
+                <p class="text-muted">@yield('page-subtitle', 'Selamat datang di login Adminstrasi Surat')</p>
             </div>
 
             <div class="auth-body">
                 {{-- start alert Messages --}}
-                @if(session('success'))
+                @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('success') }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -60,10 +72,10 @@
                     </div>
                 @endif
 
-                @if($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <ul class="mb-0">
-                            @foreach($errors->all() as $error)
+                            @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
@@ -94,4 +106,5 @@
 
     @yield('scripts')
 </body>
+
 </html>

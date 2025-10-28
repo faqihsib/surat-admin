@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon">
+    <!-- load font awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
 </head>
 
 <body>
@@ -22,22 +24,24 @@
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <li class='sidebar-title'>Main Menu</li>
-                        <li class="sidebar-item active ">
+                        <li class="sidebar-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
                             <a href="{{ route('admin.index') }}" class='sidebar-link'>
                                 <i data-feather="home" width="20"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
-                            <a href="{{ route('warga.index') }}" class='sidebar-link'>
-                                <i data-feather="users" width="20"></i>
-                                <span>Data Warga</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
+                        <li class='sidebar-title'>Fitur Utama</li>
+                        <li class="sidebar-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
                             <a href="{{ route('jenis-surat.index') }}" class='sidebar-link'>
                                 <i data-feather="file-text" width="20"></i>
                                 <span>Jenis Surat</span>
+                            </a>
+                        </li>
+                        <li class='sidebar-title'>Master Data</li>
+                        <li class="sidebar-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                            <a href="{{ route('warga.index') }}" class='sidebar-link'>
+                                <i data-feather="users" width="20"></i>
+                                <span>Data Warga</span>
                             </a>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
@@ -383,12 +387,40 @@
     <script src="{{ asset('assets/js/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
-
     <script src="{{ asset('assets/vendors/chartjs/Chart.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
-
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <!-- add your custom CSS -->
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        /* Add WA floating button CSS */
+        .floating {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+        }
+
+        .fab-icon {
+            margin-top: 16px;
+        }
+    </style>
+    <a href="https://wa.me/6285271275763?text=Hi%20Qiscus" class="floating" target="_blank">
+        <i class="fab fa-whatsapp fab-icon"></i>
+    </a>
 </body>
 
 </html>
