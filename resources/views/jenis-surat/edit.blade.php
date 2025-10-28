@@ -85,14 +85,14 @@
                                 <div class="form-group">
                                     <label for="status">Status</label>
                                     <select class="form-control" id="status" name="status" required>
-                                        <option value="sedang_diproses"
-                                            {{ old('status', $dataJenisSurat->status) == 'sedang_diproses' ? 'selected' : '' }}>
+                                        <option value="diajukan"
+                                            {{ old('status', $dataJenisSurat->status) == 'diajukan' ? 'selected' : '' }}>
+                                            Sedang Diajukan</option>
+                                        <option value="diproess"
+                                            {{ old('status', $dataJenisSurat->status) == 'diproess' ? 'selected' : '' }}>
                                             Sedang Diproses</option>
-                                        <option value="sedang_diverifikasi"
-                                            {{ old('status', $dataJenisSurat->status) == 'sedang_diverifikasi' ? 'selected' : '' }}>
-                                            Sedang Diverifikasi</option>
-                                        <option value="diterima"
-                                            {{ old('status', $dataJenisSurat->status) == 'diterima' ? 'selected' : '' }}>
+                                        <option value="selesai"
+                                            {{ old('status', $dataJenisSurat->status) == 'selesai' ? 'selected' : '' }}>
                                             Diterima</option>
                                     </select>
                                     @error('status')

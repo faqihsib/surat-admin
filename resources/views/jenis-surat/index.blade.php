@@ -53,10 +53,10 @@
                                     <td>{{ $item->nama_jenis }}</td>
                                     <td>{{ $item->syarat_json }}</td>
                                     <td>
-                                        @if ($item->status == 'sedang_diproses')
-                                            <span class="badge bg-warning">Sedang Diproses</span>
-                                        @elseif($item->status == 'sedang_diverifikasi')
-                                            <span class="badge bg-info">Sedang Diverifikasi</span>
+                                        @if ($item->status == 'diajukan')
+                                            <span class="badge bg-warning">Sedang Diajukan</span>
+                                        @elseif($item->status == 'diproess')
+                                            <span class="badge bg-info">Sedang Diproses</span>
                                         @else
                                             <span class="badge bg-success">Diterima</span>
                                         @endif
