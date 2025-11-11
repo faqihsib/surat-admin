@@ -50,9 +50,9 @@
         /* Add WA floating button CSS */
         .floating {
             position: fixed;
-            width: 60px;
+            width: 80px;
             height: 60px;
-            bottom: 40px;
+            bottom: 50px;
             right: 40px;
             background-color: #25d366;
             color: #fff;
@@ -67,7 +67,7 @@
             margin-top: 16px;
         }
     </style>
-    <a href="https://wa.me/6285271275763?text=Hi%20Qiscus" class="floating" target="_blank">
+    <a href="https://wa.me/6285271275763?text=Hi%20Faqih" class="floating" target="_blank">
         <i class="fab fa-whatsapp fab-icon"></i>
     </a>
 </body>
