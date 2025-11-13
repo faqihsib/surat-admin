@@ -80,28 +80,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select class="form-control" id="status" name="status" required>
-                                        <option value="diajukan"
-                                            {{ old('status', $dataJenisSurat->status) == 'diajukan' ? 'selected' : '' }}>
-                                            Sedang Diajukan</option>
-                                        <option value="diproess"
-                                            {{ old('status', $dataJenisSurat->status) == 'diproess' ? 'selected' : '' }}>
-                                            Sedang Diproses</option>
-                                        <option value="selesai"
-                                            {{ old('status', $dataJenisSurat->status) == 'selesai' ? 'selected' : '' }}>
-                                            Diterima</option>
-                                    </select>
-                                    @error('status')
-                                        <div class="text-danger small">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary me-2">
                                 <i data-feather="check"></i>

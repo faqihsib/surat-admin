@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Warga - Layanan Desa</title>
+
     @include('layouts.admin.css')
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
 
 </head>
 
@@ -41,35 +44,44 @@
         });
     </script>
 
-    <!-- add your custom CSS -->
+
     <style>
         body {
             font-family: sans-serif;
         }
 
-        /* Add WA floating button CSS */
-        .floating {
+        /* 1. Aturan untuk Link (Pembungkus) */
+        .wa-floating-button {
             position: fixed;
-            width: 80px;
-            height: 60px;
+            width: 60px;  /* Ukuran lingkaran */
+            height: 60px; /* Ukuran lingkaran */
             bottom: 50px;
             right: 40px;
-            background-color: #25d366;
-            color: #fff;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 3px #999;
+
+            /* Bulat sempurna */
+            border-radius: 50%;
+
+            box-shadow: 2px 2px 5px #999;
             z-index: 100;
+            transition: transform 0.2s ease-in-out;
         }
 
-        .fab-icon {
-            margin-top: 16px;
+        /* Efek hover */
+        .wa-floating-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* 2. Aturan untuk Gambar di dalamnya */
+        .wa-floating-button img {
+            width: 100%;
+            height: 100%;
+            /* Pastikan gambar juga ikut bulat */
+            border-radius: 50%;
         }
     </style>
-    <a href="https://wa.me/6285271275763?text=Hi%20Faqih" class="floating" target="_blank">
-        <i class="fab fa-whatsapp fab-icon"></i>
+    <a href="https://wa.me/6285271275763?text=Hi%20Faqih" class="wa-floating-button" target="_blank">
+        <img src="{{ asset('assets/images/waa.png') }}" alt="WhatsApp">
     </a>
-</body>
+    </body>
 
 </html>

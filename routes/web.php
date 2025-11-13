@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\PermohonanSuratController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -22,6 +23,7 @@ Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.i
 Route::resource('user', UserController::class);
 Route::resource('warga', WargaController::class);
 Route::resource('jenis-surat', JenisSuratController::class);
+Route::resource('permohonan-surat', PermohonanSuratController::class);
 
 
 // Auth Routes (manual karena resource tidak cocok untuk auth)

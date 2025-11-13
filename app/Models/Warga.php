@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Warga extends Model
 {
+    use HasFactory;
     // Nama tabel
     protected $table = 'warga';
 
@@ -22,4 +24,8 @@ class Warga extends Model
         'telp',
         'email'
     ];
+    public function permohonanSurat()
+    {
+        return $this->hasMany(PermohonanSurat::class, 'pemohon_warga_id', 'warga_id');
+    }
 }
