@@ -36,6 +36,29 @@
                     </a>
                 </div>
                 <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <form method="GET" action="{{ route('permohonan-surat.index') }}">
+                                <div class="input-group">
+                                    <select name="status" class="form-control" onchange="this.form.submit()">
+                                        <option value="">Status</option>
+                                        <option value="Diajukan" {{ request('status') == 'Diajukan' ? 'selected' : '' }}>
+                                            Diajukan</option>
+                                        <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>
+                                            Diproses</option>
+                                        <option value="Selesai" {{ request('status') == 'Selesai' ? 'selected' : '' }}>
+                                            Selesai</option>
+                                        <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>
+                                            Ditolak</option>
+                                    </select>
+                                    @if (request('status'))
+                                        <a href="{{ route('permohonan-surat.index') }}"
+                                            class="btn btn-outline-secondary">Reset</a>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <table class='table table-striped' id="table1">
                         <thead>
                             <tr>
@@ -54,7 +77,8 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nomor_permohonan }}</td>
                                     <td>{{ $item->pemohon ? $item->pemohon->nama : 'Warga Dihapus' }}</td>
-                                    <td>{{ $item->jenisSurat ? $item->jenisSurat->nama_jenis : 'Jenis Surat Dihapus' }}</td>
+                                    <td>{{ $item->jenisSurat ? $item->jenisSurat->nama_jenis : 'Jenis Surat Dihapus' }}
+                                    </td>
                                     <td>{{ $item->tanggal_pengajuan }}</td>
                                     <td>
                                         @if ($item->status == 'Diajukan')
@@ -72,8 +96,8 @@
                                             class="btn btn-sm btn-warning">
                                             <i data-feather="edit"></i> Edit
                                         </a>
-                                        <form action="{{ route('permohonan-surat.destroy', $item->permohonan_id) }}" method="POST"
-                                            class="d-inline">
+                                        <form action="{{ route('permohonan-surat.destroy', $item->permohonan_id) }}"
+                                            method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger"
@@ -86,6 +110,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-3">
+                        {{ $dataPermohonan->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
             </div>
         </section>

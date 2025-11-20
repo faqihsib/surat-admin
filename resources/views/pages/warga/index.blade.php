@@ -45,6 +45,23 @@
                     </a>
                 </div>
                 <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <form method="GET" action="{{ route('warga.index') }}">
+                                <div class="input-group">
+                                    <select name="jenis_kelamin" class="form-select" onchange="this.form.submit()">
+                                        <option value="">Jenis Kelamin</option>
+                                        <option value="L" {{ request('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                        <option value="P" {{ request('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                                    </select>
+                                    @if(request('jenis_kelamin'))
+                                    <a href="{{ route('warga.index') }}" class="btn btn-outline-secondary">Reset</a>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <table class='table table-striped' id="table1">
                         <thead>
                             <tr>
@@ -87,6 +104,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-3">
+                        {{ $dataWarga->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
             </div>
         </section>

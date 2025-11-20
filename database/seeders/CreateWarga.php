@@ -17,7 +17,7 @@ class CreateWarga extends Seeder
         $faker = Faker::create('id_ID');
 
         // Kita buat 50 data warga dummy
-        foreach (range(1, 50) as $index) {
+        foreach (range(1, 100) as $index) {
             DB::table('warga')->insert([
                 'no_ktp' => $faker->unique()->numerify('14##############'),
                 'nama' => $faker->name(),

@@ -12,13 +12,20 @@ class PermohonanSuratController extends Controller
     /**
      * Menampilkan daftar permohonan surat.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil data permohonan beserta relasi pemohon dan jenisSurat
-        // 'with' (Eager Loading) penting untuk performa agar tidak terjadi N+1 query
-        $data['dataPermohonan'] = PermohonanSurat::with(['pemohon', 'jenisSurat'])->get();
+        $filterableColumns = ['status'];
 
-        return view('pages.permohonan-surat.index', $data);
+        $data['dataPermohonan'] = PermohonanSurat::with(['pemohon', 'jenisSurat'])
+                                    ->filter($request, $filterableColumns)
+                                    ->paginate(10) // Pagination
+                                    ->withQueryString();
+
+        return view('pages.permohonan-surat.index', $data); 
+
+        // $data['dataPermohonan'] = PermohonanSurat::with(['pemohon', 'jenisSurat'])->get();
+
+        // return view('pages.permohonan-surat.index', $data);
     }
 
     /**
