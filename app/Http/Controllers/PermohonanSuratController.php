@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\PermohonanSurat;
 use App\Models\Warga;
 use App\Models\JenisSurat;
+use App\Models\Multiuploads; // Import Model Upload
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File; // Import Facade File
 
 class PermohonanSuratController extends Controller
 {
@@ -18,14 +20,11 @@ class PermohonanSuratController extends Controller
 
         $data['dataPermohonan'] = PermohonanSurat::with(['pemohon', 'jenisSurat'])
                                     ->filter($request, $filterableColumns)
-                                    ->paginate(10) // Pagination
+                                    ->latest()
+                                    ->paginate(10)
                                     ->withQueryString();
 
-        return view('pages.permohonan-surat.index', $data); 
-
-        // $data['dataPermohonan'] = PermohonanSurat::with(['pemohon', 'jenisSurat'])->get();
-
-        // return view('pages.permohonan-surat.index', $data);
+        return view('pages.permohonan-surat.index', $data);
     }
 
     /**
@@ -33,8 +32,6 @@ class PermohonanSuratController extends Controller
      */
     public function create()
     {
-        // Kita perlu mengirim daftar warga dan jenis surat ke view
-        // untuk mengisi <select> dropdown.
         $data['dataWarga'] = Warga::all();
         $data['dataJenisSurat'] = JenisSurat::all();
 
@@ -48,24 +45,50 @@ class PermohonanSuratController extends Controller
     {
         $request->validate([
             'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan',
-            'pemohon_warga_id' => 'required|exists:warga,warga_id', // Pastikan warga_id ada di tabel warga
-            'jenis_id' => 'required|exists:jenis_surat,jenis_id', // Pastikan jenis_id ada
+            'pemohon_warga_id' => 'required|exists:warga,warga_id',
+            'jenis_id' => 'required|exists:jenis_surat,jenis_id',
             'tanggal_pengajuan' => 'required|date',
             'status' => 'required',
+            'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        PermohonanSurat::create($request->all());
+        // 1. Simpan Data Utama
+        $permohonan = PermohonanSurat::create($request->except('files'));
+
+        // 2. Proses Upload File
+        if ($request->hasfile('files')) {
+            foreach ($request->file('files') as $file) {
+                if ($file->isValid()) {
+                    $filename = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+                    $file->move(public_path('uploads'), $filename);
+
+                    Multiuploads::create([
+                        'filename'  => $filename,
+                        'ref_table' => 'permohonan_surat',
+                        'ref_id'    => $permohonan->permohonan_id,
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('permohonan-surat.index')->with('success', 'Data permohonan berhasil ditambahkan!');
     }
 
     /**
-     * Menampilkan detail spesifik (jika diperlukan).
+     * Menampilkan detail spesifik (SOLUSI ERROR UNDEFINED VARIABLE FILES).
      */
     public function show(string $id)
     {
-        $data['permohonan'] = PermohonanSurat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
-        return view('pages.permohonan-surat.show', $data);
+        // Ambil data permohonan
+        $permohonan = PermohonanSurat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
+
+        // SOLUSI ERROR: Kita ambil data file dari tabel multiuploads
+        $files = Multiuploads::where('ref_table', 'permohonan_surat')
+                             ->where('ref_id', $id)
+                             ->get();
+
+        // Kita kirimkan $files ke view menggunakan compact
+        return view('pages.permohonan-surat.show', compact('permohonan', 'files'));
     }
 
     /**
@@ -73,10 +96,7 @@ class PermohonanSuratController extends Controller
      */
     public function edit(string $id)
     {
-        // Ambil data permohonan yang spesifik
         $data['permohonan'] = PermohonanSurat::findOrFail($id);
-
-        // Ambil data relasi untuk mengisi dropdown
         $data['dataWarga'] = Warga::all();
         $data['dataJenisSurat'] = JenisSurat::all();
 
@@ -84,22 +104,42 @@ class PermohonanSuratController extends Controller
     }
 
     /**
-     * Mengupdate data permohonan di database.
+     * Mengupdate data permohonan di database (SOLUSI FILE TIDAK TERSIMPAN SAAT EDIT).
      */
     public function update(Request $request, string $id)
     {
         $permohonan = PermohonanSurat::findOrFail($id);
 
         $request->validate([
-            // Pastikan nomor permohonan unik, kecuali untuk ID saat ini
             'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan,' . $id . ',permohonan_id',
             'pemohon_warga_id' => 'required|exists:warga,warga_id',
             'jenis_id' => 'required|exists:jenis_surat,jenis_id',
             'tanggal_pengajuan' => 'required|date',
             'status' => 'required',
+            'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $permohonan->update($request->all());
+        // 1. Update Data Utama
+        $permohonan->update($request->except('files'));
+
+        // 2. SOLUSI: Proses Upload File Tambahan (Susulan)
+        // Bagian ini TIDAK ADA di codingan lama Anda, makanya file tidak masuk database
+        if ($request->hasfile('files')) {
+            foreach ($request->file('files') as $file) {
+                if ($file->isValid()) {
+                    $filename = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+
+                    // Pastikan folder uploads ada di public
+                    $file->move(public_path('uploads'), $filename);
+
+                    Multiuploads::create([
+                        'filename'  => $filename,
+                        'ref_table' => 'permohonan_surat',
+                        'ref_id'    => $id, // ID permohonan yang sedang diedit
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('permohonan-surat.index')->with('success', 'Data permohonan berhasil diupdate!');
     }
@@ -110,8 +150,36 @@ class PermohonanSuratController extends Controller
     public function destroy(string $id)
     {
         $permohonan = PermohonanSurat::findOrFail($id);
+
+        // Hapus file fisik dan record di multiuploads
+        $files = Multiuploads::where('ref_table', 'permohonan_surat')->where('ref_id', $id)->get();
+        foreach($files as $file){
+            if(File::exists(public_path('uploads/' . $file->filename))){
+                File::delete(public_path('uploads/' . $file->filename));
+            }
+            $file->delete();
+        }
+
         $permohonan->delete();
 
         return redirect()->route('permohonan-surat.index')->with('success', 'Data permohonan berhasil dihapus!');
+    }
+
+    /**
+     * Fungsi Hapus File Spesifik (Untuk tombol hapus di halaman Detail)
+     */
+    public function deleteFile($id)
+    {
+        $file = Multiuploads::findOrFail($id);
+
+        // Hapus file fisik
+        if(File::exists(public_path('uploads/' . $file->filename))){
+            File::delete(public_path('uploads/' . $file->filename));
+        }
+
+        $permohonanId = $file->ref_id; // Simpan ID untuk redirect
+        $file->delete(); // Hapus dari DB
+
+        return redirect()->route('permohonan-surat.show', $permohonanId)->with('success', 'Berkas berhasil dihapus.');
     }
 }

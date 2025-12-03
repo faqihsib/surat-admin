@@ -92,10 +92,18 @@
                                         @endif
                                     </td>
                                     <td>
+                                        <a href="{{ route('permohonan-surat.show', $item->permohonan_id) }}"
+                                            class="btn btn-info btn-sm">
+                                            <i data-feather="eye"></i> Detail
+                                        </a>
                                         <a href="{{ route('permohonan-surat.edit', $item->permohonan_id) }}"
                                             class="btn btn-sm btn-warning">
                                             <i data-feather="edit"></i> Edit
                                         </a>
+                                        {{-- <a href="{{ route('permohonan-surat.edit', $item->permohonan_id) }}"
+                                            class="btn btn-sm btn-warning">
+                                            <i data-feather="edit"></i> Edit
+                                        </a> --}}
                                         <form action="{{ route('permohonan-surat.destroy', $item->permohonan_id) }}"
                                             method="POST" class="d-inline">
                                             @csrf

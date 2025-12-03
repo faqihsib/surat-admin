@@ -13,8 +13,7 @@
                     <nav aria-label="breadcrumb" class='breadcrumb-header'>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('permohonan-surat.index') }}">Permohonan Surat</a>
-                            </li>
+                            <li class="breadcrumb-item"><a href="{{ route('permohonan-surat.index') }}">Permohonan Surat</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Edit</li>
                         </ol>
                     </nav>
@@ -38,7 +37,8 @@
                     <h4 class="card-title">Form Edit Permohonan Surat</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('permohonan-surat.update', $permohonan->permohonan_id) }}">
+                    {{-- PENTING: Tambahkan enctype="multipart/form-data" --}}
+                    <form method="POST" action="{{ route('permohonan-surat.update', $permohonan->permohonan_id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -134,6 +134,36 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- FITUR BARU UPLOAD FILE --}}
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                {{-- <div class="form-group p-3 border rounded bg-light"> --}}
+                                    <label class="mb-2"><strong>Kelola Berkas Persyaratan</strong></label>
+
+                                    {{-- Link ke halaman detail untuk melihat/menghapus file lama --}}
+                                    <div class="mb-3">
+                                        <div class="alert alert-info">
+                                            <i data-feather="info" class="me-2"></i>
+                                            Ingin melihat atau menghapus file yang sudah diupload sebelumnya?
+                                            <a href="{{ route('permohonan-surat.show', $permohonan->permohonan_id) }}" class="fw-bold text-decoration-underline">Klik di sini untuk ke halaman Detail</a>.
+                                        </div>
+                                    </div>
+
+                                    <label for="files"><strong>Tambah File Baru</strong></label>
+                                    <div class="custom-file mt-2">
+                                        <input type="file" class="form-control" name="files[]" id="files" multiple>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">
+                                        * File yang diupload di sini akan <strong>ditambahkan</strong> ke daftar file yang sudah ada
+                                    </small>
+
+                                    @error('files') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                    @error('files.*') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                {{-- </div> --}}
+                            </div>
+                        </div>
+                        {{-- AKHIR FITUR KELOLA FILE --}}
 
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary me-2">
