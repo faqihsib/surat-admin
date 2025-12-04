@@ -13,17 +13,17 @@ use App\Http\Controllers\PermohonanSuratController;
 
 // Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-//login
+//auth (login & logout)
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
-Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+//Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
+//Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 //
-Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
-Route::resource('user', UserController::class);
-Route::resource('warga', WargaController::class);
-Route::resource('jenis-surat', JenisSuratController::class);
-Route::resource('permohonan-surat', PermohonanSuratController::class);
+//Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
+// Route::resource('user', UserController::class);
+// Route::resource('warga', WargaController::class);
+// Route::resource('jenis-surat', JenisSuratController::class);
+// Route::resource('permohonan-surat', PermohonanSuratController::class);
 
 
 // Auth Routes (manual karena resource tidak cocok untuk auth)
@@ -34,4 +34,29 @@ Route::post('/register', [AuthController::class, 'register'])->name('auth.regist
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 //untuk multiupload files
-Route::delete('/upload/delete/{id}', [PermohonanSuratController::class, 'deleteFile'])->name('uploads.delete');
+//Route::delete('/upload/delete/{id}', [PermohonanSuratController::class, 'deleteFile'])->name('uploads.delete');
+
+
+//middleware
+Route::group(['middleware' => ['checkislogin']], function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
+    // 1. ROLE: SUPERADMIN
+    // Hanya Superadmin yang bisa kelola User:
+    Route::group(['middleware' => ['checkrole:superadmin']], function () {
+        Route::resource('users', UserController::class);
+    });
+    // 2. ROLE: STAFF (dan Superadmin)
+    // Staff bisa Create, Edit, Update, Delete data Warga, Jenis Surat, Permohonan
+    // Guest TIDAK BISA akses route ini
+    Route::group(['middleware' => ['checkrole:staff']], function () {
+        Route::resource('warga', WargaController::class)->except(['index', 'show']);
+        Route::resource('jenis-surat', JenisSuratController::class)->except(['index', 'show']);
+        Route::resource('permohonan-surat', PermohonanSuratController::class)->except(['index', 'show']);
+        Route::delete('/permohonan-surat/delete-file/{id}', [PermohonanSuratController::class, 'deleteFile'])->name('uploads.delete');
+    });
+    // 3. SEMUA ROLE (Termasuk Guest)
+    // Guest hanya bisa melihat data (Index dan Show)
+    Route::resource('warga', WargaController::class)->only(['index', 'show']);
+    Route::resource('jenis-surat', JenisSuratController::class)->only(['index', 'show']);
+    Route::resource('permohonan-surat', PermohonanSuratController::class)->only(['index', 'show']);
+});

@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
-                    <a href="{{ route('user.index') }}" class='sidebar-link'>
+                    <a href="{{ route('users.index') }}" class='sidebar-link'>
                         <i data-feather="user" width="20"></i>
                         <span>Data User</span>
                     </a>

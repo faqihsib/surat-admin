@@ -28,7 +28,7 @@
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <a href="{{ route('user.create') }}" class="btn btn-primary">
+                    <a href="{{ route('users.create') }}" class="btn btn-primary">
                         <i data-feather="plus"></i> Tambah User
                     </a>
                 </div>
@@ -38,6 +38,7 @@
                             <tr>
                                 <th>Nama</th>
                                 <th>Email</th>
+                                <th>Role</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -46,11 +47,12 @@
                                 <tr>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
+                                    <td>{{ $item->role }}</td>
                                     <td>
-                                        <a href="{{ route('user.edit', $item->id) }}" class="btn btn-sm btn-warning me-1">
+                                        <a href="{{ route('users.edit', $item->id) }}" class="btn btn-sm btn-warning me-1">
                                             <i data-feather="edit"></i> Edit
                                         </a>
-                                        <form action="{{ route('user.destroy', $item->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('users.destroy', $item->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">

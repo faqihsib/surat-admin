@@ -12,7 +12,7 @@
                     <nav aria-label="breadcrumb" class='breadcrumb-header'>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Data User</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Data User</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Tambah</li>
                         </ol>
                     </nav>
@@ -36,7 +36,7 @@
                     <h4 class="card-title">Form Tambah User</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('user.store') }}">
+                    <form method="POST" action="{{ route('users.store') }}">
                         @csrf
 
                         <div class="row">
@@ -67,13 +67,27 @@
                                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                <label for="role">Role (Hak Akses)</label>
+                                <select class="form-control @error('role') is-invalid @enderror" id="role" name="role" required>
+                                    <option value="">-- Pilih Role --</option>
+                                    <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>Super Admin</option>
+                                    <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff</option>
+                                    <option value="guest" {{ old('role') == 'guest' ? 'selected' : '' }}>Guest</option>
+                                </select>
+                                @error('role')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">
                                 Simpan
                             </button>
-                            <a href="{{ route('user.index') }}" class="btn btn-secondary">Batal</a>
+                            <a href="{{ route('users.index') }}" class="btn btn-secondary">Batal</a>
                         </div>
                     </form>
                 </div>

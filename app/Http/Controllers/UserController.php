@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['dataUser'] = User::all(); // Pastikan ini User dengan huruf kapital
+        $data['dataUser'] = User::all();
         return view('pages.user.index', $data);
     }
 
@@ -33,16 +33,18 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed'
+            'password' => 'required|min:6|confirmed',
+            'role' => 'required|in:superadmin,staff,guest',
         ]);
 
         $data['name'] = $request->name;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
+        $data['role'] = $request->role;
 
         User::create($data); // Pastikan ini User dengan huruf kapital
 
-        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
+        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan!');
     }
 
     /**
@@ -83,7 +85,7 @@ class UserController extends Controller
         }
 
         $user->save();
-        return redirect()->route('user.index')->with('success', 'User berhasil diupdate!');
+        return redirect()->route('users.index')->with('success', 'User berhasil diupdate!');
     }
 
     /**
@@ -94,6 +96,6 @@ class UserController extends Controller
         $user = User::findOrFail($id); // Pastikan ini User dengan huruf kapital
         $user->delete();
 
-        return redirect()->route('user.index')->with('success', 'User berhasil dihapus!');
+        return redirect()->route('users.index')->with('success', 'User berhasil dihapus!');
     }
 }

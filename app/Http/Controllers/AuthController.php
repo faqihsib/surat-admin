@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 
 class AuthController extends Controller
 {
@@ -21,18 +23,26 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        //dd($request->all());
+        // 1. Validasi input wajib diisi
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        $data['email'] = $request->email;
-        $data['password'] = $request->password;
+        // 2. Gunakan Auth::attempt (Otomatis cek password & buat sesi)
+        if (Auth::attempt($credentials)) {
 
-        $user = User::where('email', $data['email'])->first();
+            // Regenerasi sesi untuk keamanan (mencegah session fixation)
+            $request->session()->regenerate();
 
-        if ($user && Hash::check($data['password'], $user->password)) {
+            // Cek role user untuk debug (opsional, bisa dihapus nanti)
+            // dd(Auth::user());
+
             return redirect()->route('admin.index')->with('success', 'Login Berhasil!');
-        } else {
-            return redirect()->route('auth.index')->with('error', 'Email atau Password Salah!');
         }
+
+        // 3. Jika gagal
+        return back()->with('error', 'Email atau Password Salah!');
     }
 
     /**
@@ -48,11 +58,17 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        //dd($request->all());
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+        ]);
 
         $data['name'] = $request->name;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
+        // Default role jika register mandiri (misal: guest)
+        $data['role'] = 'guest';
 
         User::create($data);
 
@@ -62,8 +78,17 @@ class AuthController extends Controller
     /**
      * Process logout
      */
-    public function logout()
+    public function logout(Request $request)
     {
+        // Hapus sesi login
+        Auth::logout();
+
+        // Invalidasi token sesi
+        $request->session()->invalidate();
+
+        // Regenerasi token CSRF
+        $request->session()->regenerateToken();
+
         return redirect()->route('auth.index')->with('success', 'Logout Berhasil!');
     }
 }
