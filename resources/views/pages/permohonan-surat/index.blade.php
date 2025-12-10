@@ -37,8 +37,9 @@
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col-md-4">
-                            <form method="GET" action="{{ route('permohonan-surat.index') }}">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            {{-- Form Filter --}}
+                            <form method="GET" action="{{ route('permohonan-surat.index') }}" class="form-inline">
                                 <div class="input-group">
                                     <select name="status" class="form-control" onchange="this.form.submit()">
                                         <option value="">Status</option>
@@ -68,7 +69,7 @@
                                 <th>Jenis Surat</th>
                                 <th>Tanggal Pengajuan</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <th width="180px">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,27 +93,31 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('permohonan-surat.show', $item->permohonan_id) }}"
-                                            class="btn btn-info btn-sm">
-                                            <i data-feather="eye"></i> Detail
-                                        </a>
-                                        <a href="{{ route('permohonan-surat.edit', $item->permohonan_id) }}"
-                                            class="btn btn-sm btn-warning">
-                                            <i data-feather="edit"></i> Edit
-                                        </a>
-                                        {{-- <a href="{{ route('permohonan-surat.edit', $item->permohonan_id) }}"
-                                            class="btn btn-sm btn-warning">
-                                            <i data-feather="edit"></i> Edit
-                                        </a> --}}
-                                        <form action="{{ route('permohonan-surat.destroy', $item->permohonan_id) }}"
-                                            method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Yakin ingin menghapus?')">
-                                                <i data-feather="trash"></i> Hapus
-                                            </button>
-                                        </form>
+                                        <div class="btn-group" role="group" style="gap: 4px;">
+                                            <a href="{{ route('permohonan-surat.show', $item->permohonan_id) }}"
+                                                class="btn btn-info btn-sm d-flex align-items-center justify-content-center"
+                                                style="width: 60px; height: 32px; padding: 0;">
+                                                <i data-feather="eye" style="width: 16px; height: 16px;"></i>
+                                                <span class="ms-1" style="font-size: 12px;">Detail</span>
+                                            </a>
+                                            <a href="{{ route('permohonan-surat.edit', $item->permohonan_id) }}"
+                                                class="btn btn-warning btn-sm d-flex align-items-center justify-content-center"
+                                                style="width: 60px; height: 32px; padding: 0;">
+                                                <i data-feather="edit" style="width: 16px; height: 16px;"></i>
+                                                <span class="ms-1" style="font-size: 12px;">Edit</span>
+                                            </a>
+                                            <form action="{{ route('permohonan-surat.destroy', $item->permohonan_id) }}"
+                                                method="POST" class="d-inline m-0">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center"
+                                                    style="width: 60px; height: 32px; padding: 0;"
+                                                    onclick="return confirm('Yakin ingin menghapus?')">
+                                                    <i data-feather="trash" style="width: 16px; height: 16px;"></i>
+                                                    <span class="ms-1" style="font-size: 12px;">Hapus</span>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -128,3 +133,24 @@
     </div>
     {{-- end main content --}}
 @endsection
+
+<style>
+.btn-group {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.btn-group .btn-sm {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.btn-group form {
+    margin: 0;
+    display: flex;
+}
+</style>

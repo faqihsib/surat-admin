@@ -13,20 +13,39 @@
     {{-- end css --}}
 
     <style>
+        /* Reset margin body agar tidak ada scrollbar tidak perlu */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden; /* Mencegah scrollbar ganda */
+        }
+
         .auth-container {
             min-height: 100vh;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: url('assets/images/auth.jpg');
+
+            /* SETTING BACKGROUND YANG BENAR */
+            /* Menggunakan asset() agar path gambar akurat */
+            background-image: url("{{ asset('assets/images/auth.jpg') }}");
+
+            /* Agar gambar memenuhi layar tanpa terpotong aneh */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
 
         .auth-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95); /* Sedikit transparan agar estetik */
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
+            margin: 20px; /* Jarak aman di layar HP */
         }
 
         .auth-header {
@@ -42,12 +61,6 @@
         .auth-body {
             padding: 1rem 2rem 2rem;
         }
-
-        body {
-            background-image: url('public/assets/images/background/auth.jpg');
-            background-size: cover;
-            background-position: center;
-        }
     </style>
 </head>
 
@@ -58,7 +71,7 @@
             <div class="auth-header">
                 <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="auth-logo">
                 <h4>@yield('page-title', 'Login Administrasi Desa')</h4>
-                <p class="text-muted">@yield('page-subtitle', 'Selamat datang di login Adminstrasi Surat')</p>
+                <p class="text-muted">@yield('page-subtitle', 'Selamat datang di login Administrasi Surat')</p>
             </div>
 
             <div class="auth-body">
@@ -74,7 +87,7 @@
 
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <ul class="mb-0">
+                        <ul class="mb-0 pl-3">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Warga;
+use App\Models\PermohonanSurat;
+use App\Models\JenisSurat;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -11,15 +16,40 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //data dummy
-        $data = [
-            'total_warga' => 1500,
-            'permohonan_hari_ini' => 12,
-            'permohonan_diproses' => 5,
-            'permohonan_selesai' => 32,
-        ];
+        // 1. Menghitung Data Statistik untuk Kartu Atas
+        $total_warga = Warga::count();
 
-        return view('pages.admin.dashboard', $data);
+        // Menghitung permohonan yang dibuat HARI INI
+        $permohonan_hari_ini = PermohonanSurat::whereDate('created_at', Carbon::today())->count();
+
+        // Menghitung status spesifik
+        $permohonan_diproses = PermohonanSurat::where('status', 'Diproses')->count();
+        $permohonan_selesai = PermohonanSurat::where('status', 'Selesai')->count();
+
+        // 2. Mengambil Data untuk Tabel "Daftar Permohonan Terbaru"
+        // Kita ambil 5 data terakhir, lengkap dengan relasi pemohon dan jenis surat
+        $permohonan_terbaru = PermohonanSurat::with(['pemohon', 'jenisSurat'])
+                                ->latest()
+                                ->take(5)
+                                ->get();
+
+        // 3. Mengambil Data untuk Grafik (Opsional, contoh sederhana per bulan)
+        // Disini kita kirim data count saja untuk simplicity
+        $total_permohonan = PermohonanSurat::count();
+
+        return view('pages.admin.dashboard', compact(
+            'total_warga',
+            'permohonan_hari_ini',
+            'permohonan_diproses',
+            'permohonan_selesai',
+            'permohonan_terbaru',
+            'total_permohonan'
+        ));
+    }
+
+    public function about()
+    {
+        return view('pages.admin.about');
     }
 
     /**

@@ -36,7 +36,7 @@
                     <h4 class="card-title">Form Edit User</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('users.update', $dataUser->id) }}">
+                    <form method="POST" action="{{ route('users.update', $dataUser->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -79,16 +79,37 @@
                                     <select class="form-control @error('role') is-invalid @enderror" id="role"
                                         name="role" required>
                                         <option value="">-- Pilih Role --</option>
-                                        <option value="superadmin" {{ old('role', $dataUser->role) == 'superadmin' ? 'selected' : '' }}>
+                                        <option value="superadmin"
+                                            {{ old('role', $dataUser->role) == 'superadmin' ? 'selected' : '' }}>
                                             Super Admin</option>
-                                        <option value="staff" {{ old('role', $dataUser->role) == 'staff' ? 'selected' : '' }}>
+                                        <option value="staff"
+                                            {{ old('role', $dataUser->role) == 'staff' ? 'selected' : '' }}>
                                             Staff</option>
-                                        <option value="guest" {{ old('role', $dataUser->role) == 'guest' ? 'selected' : '' }}>
+                                        <option value="guest"
+                                            {{ old('role', $dataUser->role) == 'guest' ? 'selected' : '' }}>
                                             Guest</option>
                                     </select>
                                     @error('role')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="foto_profil">Foto Profil</label>
+
+                                    {{-- Tampilkan foto lama jika ada --}}
+                                    @if ($dataUser->foto_profil)
+                                        <div class="mb-2">
+                                            <img src="{{ asset('uploads/profile/' . $dataUser->foto_profil) }}" alt="Profil"
+                                                width="100" class="img-thumbnail rounded-circle">
+                                        </div>
+                                    @endif
+
+                                    <div class="custom-file">
+                                        <input type="file" class="form-control" id="foto_profil" name="foto_profil">
+                                    </div>
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah foto.</small>
                                 </div>
                             </div>
 

@@ -182,4 +182,22 @@ class PermohonanSuratController extends Controller
 
         return redirect()->route('permohonan-surat.show', $permohonanId)->with('success', 'Berkas berhasil dihapus.');
     }
+
+    public function downloadFile($id)
+    {
+        // Cari data file berdasarkan ID di tabel multiuploads
+        $file = Multiuploads::findOrFail($id);
+
+        // Tentukan lokasi file fisik
+        $filePath = public_path('uploads/' . $file->filename);
+
+        // Cek apakah file fisik ada di server
+        if (file_exists($filePath)) {
+            // Lakukan proses download
+            return response()->download($filePath, $file->filename);
+        } else {
+            // Jika file fisik hilang/terhapus manual
+            return back()->with('error', 'File fisik tidak ditemukan di server!');
+        }
+    }
 }

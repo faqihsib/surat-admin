@@ -36,20 +36,22 @@
                     <h4 class="card-title">Form Tambah User</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('users.store') }}">
+                    <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name">Nama</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ old('name') }}" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ old('email') }}" required>
                                 </div>
                             </div>
                         </div>
@@ -64,21 +66,33 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="password_confirmation">Konfirmasi Password</label>
-                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                                    <input type="password" class="form-control" id="password_confirmation"
+                                        name="password_confirmation" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                <label for="role">Role (Hak Akses)</label>
-                                <select class="form-control @error('role') is-invalid @enderror" id="role" name="role" required>
-                                    <option value="">-- Pilih Role --</option>
-                                    <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>Super Admin</option>
-                                    <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff</option>
-                                    <option value="guest" {{ old('role') == 'guest' ? 'selected' : '' }}>Guest</option>
-                                </select>
-                                @error('role')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                    <label for="role">Role (Hak Akses)</label>
+                                    <select class="form-control @error('role') is-invalid @enderror" id="role"
+                                        name="role" required>
+                                        <option value="">-- Pilih Role --</option>
+                                        <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>Super
+                                            Admin</option>
+                                        <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff</option>
+                                        <option value="guest" {{ old('role') == 'guest' ? 'selected' : '' }}>Guest</option>
+                                    </select>
+                                    @error('role')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="foto_profil">Foto Profil (Opsional)</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="form-control" id="foto_profil" name="foto_profil">
+                                    </div>
+                                    <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB.</small>
                                 </div>
                             </div>
                         </div>

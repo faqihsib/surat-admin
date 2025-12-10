@@ -35,13 +35,19 @@
                         <span>Data Warga</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                <li class="sidebar-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
                     <a href="{{ route('users.index') }}" class='sidebar-link'>
                         <i data-feather="user" width="20"></i>
                         <span>Data User</span>
                     </a>
                 </li>
-
+                <li class='sidebar-title'>Information</li>
+                <li class="sidebar-item {{ request()->routeIs('admin.about') ? 'active' : '' }}">
+                    <a href="{{ route('admin.about') }}" class='sidebar-link'>
+                        <i data-feather="info"></i>
+                        <span>About Developer</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <form method="POST" action="{{ route('auth.logout') }}" id="logout-form" class="d-none">
                         @csrf

@@ -6,7 +6,7 @@
                     </div>
                     <div class="float-right">
                         <p>Crafted with <span class='text-danger'><i data-feather="heart"></i></span> by <a
-                                href="http://ahmadsaugi.com">Faqih Hidayah</a></p>
+                                href="https://www.instagram.com/faqihhdyh._?igsh=MW0xcHVldDN4eW5xeA==">Faqih Hidayah</a></p>
                     </div>
                 </div>
             </footer>

@@ -46,8 +46,9 @@
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col-md-4">
-                            <form method="GET" action="{{ route('warga.index') }}">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            {{-- Form Filter --}}
+                            <form method="GET" action="{{ route('warga.index') }}" class="form-inline">
                                 <div class="input-group">
                                     <select name="jenis_kelamin" class="form-select" onchange="this.form.submit()">
                                         <option value="">Jenis Kelamin</option>
@@ -72,7 +73,7 @@
                                 <th>Pekerjaan</th>
                                 <th>Agama</th>
                                 <th>Telepon</th>
-                                <th>Aksi</th>
+                                <th width="130px">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,19 +87,27 @@
                                     <td>{{ $item->agama }}</td>
                                     <td>{{ $item->telp }}</td>
                                     <td>
-                                        <a href="{{ route('warga.edit', $item->warga_id) }}"
-                                            class="btn btn-sm btn-warning me-1">
-                                            <i data-feather="edit"></i> Edit
-                                        </a>
-                                        <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Yakin ingin menghapus?')">
-                                                <i data-feather="trash"></i> Hapus
-                                            </button>
-                                        </form>
+                                        <div class="d-flex" style="gap: 8px;">
+                                            <a href="{{ route('warga.edit', $item->warga_id) }}"
+                                               class="btn btn-warning btn-sm d-flex align-items-center justify-content-center"
+                                               style="width: 60px; height: 32px; padding: 0;">
+                                                <i data-feather="edit" style="width: 16px; height: 16px;"></i>
+                                                <span class="ms-1" style="font-size: 12px;">Edit</span>
+                                            </a>
+                                            <form action="{{ route('warga.destroy', $item->warga_id) }}"
+                                                  method="POST"
+                                                  class="d-inline m-0">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                        class="btn btn-danger btn-sm d-flex align-items-center justify-content-center"
+                                                        style="width: 60px; height: 32px; padding: 0;"
+                                                        onclick="return confirm('Yakin ingin menghapus?')">
+                                                    <i data-feather="trash" style="width: 16px; height: 16px;"></i>
+                                                    <span class="ms-1" style="font-size: 12px;">Hapus</span>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -113,3 +122,24 @@
     </div>
     {{-- end main content --}}
 @endsection
+
+<style>
+.d-flex {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.d-flex .btn-sm {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.d-flex form {
+    margin: 0;
+    display: flex;
+}
+</style>

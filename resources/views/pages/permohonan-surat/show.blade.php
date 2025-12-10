@@ -11,7 +11,8 @@
                     <nav aria-label="breadcrumb" class='breadcrumb-header'>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('permohonan-surat.index') }}">Permohonan Surat</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('permohonan-surat.index') }}">Permohonan Surat</a>
+                            </li>
                             <li class="breadcrumb-item active" aria-current="page">Detail</li>
                         </ol>
                     </nav>
@@ -47,7 +48,8 @@
                                 <tr>
                                     <th>Pemohon</th>
                                     <td>: {{ $permohonan->pemohon->nama ?? '-' }} <br>
-                                        <small class="text-muted ml-3">(KTP: {{ $permohonan->pemohon->no_ktp ?? '-' }})</small>
+                                        <small class="text-muted ml-3">(KTP:
+                                            {{ $permohonan->pemohon->no_ktp ?? '-' }})</small>
                                     </td>
                                 </tr>
                                 <tr>
@@ -92,46 +94,85 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="bg-light">
+                        <table class="table table-bordered table-striped">
+                            <thead>
                                 <tr>
-                                    <th style="width: 5%" class="text-center">#</th>
+                                    <th class="text-center" width="5%">No</th>
+                                    <th width="20%">Preview</th> {{-- Kolom Baru --}}
                                     <th>Nama File</th>
-                                    <th style="width: 20%">Tanggal Upload</th>
-                                    <th style="width: 20%" class="text-center">Aksi</th>
+                                    <th width="15%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($files as $file)
+                                @forelse ($files as $index => $file)
                                     <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>
-                                            {{-- Menampilkan nama file --}}
-                                            <span class="d-inline-block text-truncate" style="max-width: 300px;">
-                                                {{ $file->filename }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $file->created_at->format('d M Y, H:i') }}</td>
+                                        <td class="text-center">{{ $index + 1 }}</td>
                                         <td class="text-center">
-                                            {{-- Tombol Lihat/Download --}}
-                                            <a href="{{ asset('uploads/permohonan/' . $file->filename) }}" target="_blank" class="btn btn-sm btn-primary me-1" title="Lihat File">
-                                                <i data-feather="eye"></i>
-                                            </a>
+                                            @php
+                                                // Ambil ekstensi file
+                                                $extension = pathinfo($file->filename, PATHINFO_EXTENSION);
+                                                $extension = strtolower($extension); // ubah ke huruf kecil
+                                            @endphp
 
-                                            {{-- Tombol Hapus File --}}
-                                            <form action="{{ route('uploads.delete', $file->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus file ini secara permanen?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus File">
-                                                    <i data-feather="trash-2"></i>
-                                                </button>
-                                            </form>
+                                            {{-- Logika Preview --}}
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                {{-- Jika Gambar, tampilkan fotonya --}}
+                                                <a href="{{ asset('uploads/' . $file->filename) }}" target="_blank">
+                                                    <img src="{{ asset('uploads/' . $file->filename) }}" alt="Preview"
+                                                        class="img-thumbnail" style="max-height: 100px; max-width: 100px;">
+                                                </a>
+                                            @else
+                                                {{-- Jika Bukan Gambar (PDF/DOC), tampilkan Placeholder --}}
+                                                {{-- Menggunakan placehold.co seperti permintaan revisi dosen --}}
+                                                <img src="https://placehold.co/100x100?text={{ strtoupper($extension) }}"
+                                                    alt="Dokumen" class="img-thumbnail">
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{-- Tampilkan nama file asli (tanpa timestamp di depan agar rapi) --}}
+                                            {{-- Logika: memotong string setelah tanda strip pertama --}}
+                                            {{ substr($file->filename, strpos($file->filename, '-') + 1) }}
+                                            <br>
+                                            <small class="text-muted">File asli: {{ $file->filename }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                                {{-- TOMBOL DOWNLOAD --}}
+                                                {{-- Tambahkan class 'd-inline-flex align-items-center' agar icon dan text rapi --}}
+                                                <a href="{{ route('permohonan-surat.download', $file->id) }}"
+                                                    class="btn btn-success btn-sm d-inline-flex align-items-center"
+                                                    title="Download File" style="height: 34px;"> {{-- Memaksa tinggi tombol sama --}}
+                                                    <i data-feather="download" class="me-1"
+                                                        style="width: 14px; height: 14px;"></i> Download
+                                                </a>
+
+                                                {{-- TOMBOL HAPUS --}}
+                                                @if ($permohonan->status == 'Diajukan' || $permohonan->status == 'Diproses')
+                                                    <form action="{{ route('uploads.delete', $file->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm d-inline-flex align-items-center"
+                                                            onclick="return confirm('Hapus file ini?')" title="Hapus File"
+                                                            style="height: 34px;"> {{-- Memaksa tinggi tombol sama --}}
+                                                            <i data-feather="trash" class="me-1"
+                                                                style="width: 14px; height: 14px;"></i> Hapus
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted py-4">
-                                            <em>Belum ada berkas yang diunggah untuk permohonan ini.</em>
+                                        <td colspan="4" class="text-center text-muted">
+                                            <img src="https://i.ibb.co.com/3Y1fKJ4D/imgplaceholder.png"
+                                                alt="Tidak Ada Berkas" class="img-fluid mb-3"
+                                                style="max-width: 200px; opacity: 0.6;">
+
+                                            {{-- Opsional: Tambahan teks kecil di bawah gambar agar lebih jelas --}}
+                                            <div class="text-muted small">Opps, tidak ada file disini!</div>
                                         </td>
                                     </tr>
                                 @endforelse
@@ -141,28 +182,29 @@
 
                     {{-- Form Upload Cepat (Susulan) --}}
                     {{-- <div class="mt-4 p-4 bg-light rounded border"> --}}
-                        <h6 class="mb-3"><i data-feather="upload-cloud"></i> Upload Berkas Tambahan</h6>
-                        <form action="{{ route('permohonan-surat.update', $permohonan->permohonan_id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+                    <h6 class="mb-3"><i data-feather="upload-cloud"></i> Upload Berkas Tambahan</h6>
+                    <form action="{{ route('permohonan-surat.update', $permohonan->permohonan_id) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
 
-                            {{-- Hidden fields untuk data wajib controller agar tidak error validasi --}}
-                            <input type="hidden" name="nomor_permohonan" value="{{ $permohonan->nomor_permohonan }}">
-                            <input type="hidden" name="pemohon_warga_id" value="{{ $permohonan->pemohon_warga_id }}">
-                            <input type="hidden" name="jenis_id" value="{{ $permohonan->jenis_id }}">
-                            <input type="hidden" name="tanggal_pengajuan" value="{{ $permohonan->tanggal_pengajuan }}">
-                            <input type="hidden" name="status" value="{{ $permohonan->status }}">
+                        {{-- Hidden fields untuk data wajib controller agar tidak error validasi --}}
+                        <input type="hidden" name="nomor_permohonan" value="{{ $permohonan->nomor_permohonan }}">
+                        <input type="hidden" name="pemohon_warga_id" value="{{ $permohonan->pemohon_warga_id }}">
+                        <input type="hidden" name="jenis_id" value="{{ $permohonan->jenis_id }}">
+                        <input type="hidden" name="tanggal_pengajuan" value="{{ $permohonan->tanggal_pengajuan }}">
+                        <input type="hidden" name="status" value="{{ $permohonan->status }}">
 
-                            <div class="input-group">
-                                <input type="file" class="form-control" name="files[]" multiple required>
-                                <button class="btn btn-success" type="submit">
-                                    <i data-feather="upload"></i> Upload Sekarang
-                                </button>
-                            </div>
-                            <small class="text-muted mt-2 d-block">
-                                Format: JPG, PNG, PDF, DOCX. Maksimal 2MB.
-                            </small>
-                        </form>
+                        <div class="input-group">
+                            <input type="file" class="form-control" name="files[]" multiple required>
+                            <button class="btn btn-success" type="submit">
+                                <i data-feather="upload"></i> Upload Sekarang
+                            </button>
+                        </div>
+                        <small class="text-muted mt-2 d-block">
+                            Format: JPG, PNG, PDF, DOCX. Maksimal 2MB.
+                        </small>
+                    </form>
                     {{-- </div> --}}
 
                 </div>
