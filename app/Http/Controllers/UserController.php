@@ -130,4 +130,20 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus!');
     }
+
+    public function deleteFoto($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Hapus file fisik jika ada
+        if ($user->foto_profil && File::exists(public_path('uploads/profile/' . $user->foto_profil))) {
+            File::delete(public_path('uploads/profile/' . $user->foto_profil));
+        }
+
+        // Set kolom database jadi NULL
+        $user->foto_profil = null;
+        $user->save();
+
+        return back()->with('success', 'Foto profil berhasil dihapus.');
+    }
 }
