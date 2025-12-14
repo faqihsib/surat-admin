@@ -9,7 +9,7 @@
     {{-- start css --}}
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logoBaru.png') }}" type="image/x-icon">
     {{-- end css --}}
 
     <style>
@@ -69,7 +69,7 @@
         <div class="auth-card">
             {{-- start header --}}
             <div class="auth-header">
-                <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="auth-logo">
+                <img src="{{ asset('assets/images/logoBaru.png') }}" alt="Logo" class="auth-logo">
                 <h4>@yield('page-title', 'Login Administrasi Desa')</h4>
                 <p class="text-muted">@yield('page-subtitle', 'Selamat datang di login Administrasi Surat')</p>
             </div>

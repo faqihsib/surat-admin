@@ -2,7 +2,8 @@
 <div id="sidebar" class='active'>
     <div class="sidebar-wrapper active">
         <div class="sidebar-header">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="" srcset="">
+            <img src="{{ asset('assets/images/logoA.png') }}" alt="Logo" srcset=""
+                style="height: auto; width: 150px; max-width: 100%;">
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
