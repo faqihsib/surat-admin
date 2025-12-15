@@ -29,6 +29,16 @@
                         <span>Permohonan Surat</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ request()->routeIs('berkas.*') ? 'active' : '' }}">
+                    <a href="{{ route('berkas.index') }}" class='sidebar-link'>
+                        <i data-feather="folder"></i> <span>Berkas Persyaratan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ request()->routeIs('riwayat.*') ? 'active' : '' }}">
+                    <a href="{{ route('riwayat.index') }}" class='sidebar-link'>
+                        <i data-feather="clock"></i> <span>Riwayat Status</span>
+                    </a>
+                </li>
                 <li class='sidebar-title'>Master Data</li>
                 <li class="sidebar-item {{ request()->routeIs('warga.*') ? 'active' : '' }}">
                     <a href="{{ route('warga.index') }}" class='sidebar-link'>

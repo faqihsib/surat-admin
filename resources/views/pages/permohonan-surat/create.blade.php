@@ -133,7 +133,7 @@
                         {{-- FITUR BARU: MULTIPLE UPLOAD FILES --}}
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <label for="files"><strong>Upload Berkas Persyaratan</strong></label>
+                                <label for="files"><strong>Upload Lampiran Pemohon</strong></label>
                                 <div class="custom-file mt-2">
                                     {{-- name="files[]" dan attribute "multiple" wajib ada --}}
                                     <input type="file" class="form-control" name="files[]" id="files" multiple>

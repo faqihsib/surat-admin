@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\PermohonanSurat;
 use App\Models\Warga;
 use App\Models\JenisSurat;
-use App\Models\Multiuploads; // Import Model Upload
+use App\Models\Media;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File; // Import Facade File
+use Illuminate\Support\Facades\File;
+
+// Import Facade File
 
 class PermohonanSuratController extends Controller
 {
@@ -60,12 +62,16 @@ class PermohonanSuratController extends Controller
             foreach ($request->file('files') as $file) {
                 if ($file->isValid()) {
                     $filename = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+
                     $file->move(public_path('uploads'), $filename);
 
-                    Multiuploads::create([
-                        'filename'  => $filename,
-                        'ref_table' => 'permohonan_surat',
-                        'ref_id'    => $permohonan->permohonan_id,
+                    Media::create([
+                    'file_url'   => $filename, // Kolom file_url diisi nama unik
+                    'ref_table'  => 'permohonan_surat',
+                    'ref_id'     => $permohonan->permohonan_id,
+                    'caption'    => $file->getClientOriginalName(),
+                    'mime_type'  => $file->getClientMimeType(),
+                    'sort_order' => 0
                     ]);
                 }
             }
@@ -129,13 +135,15 @@ class PermohonanSuratController extends Controller
                 if ($file->isValid()) {
                     $filename = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
 
-                    // Pastikan folder uploads ada di public
                     $file->move(public_path('uploads'), $filename);
 
-                    Multiuploads::create([
-                        'filename'  => $filename,
-                        'ref_table' => 'permohonan_surat',
-                        'ref_id'    => $id, // ID permohonan yang sedang diedit
+                    Media::create([
+                    'file_url'   => $filename, // Kolom file_url diisi nama unik
+                    'ref_table'  => 'permohonan_surat',
+                    'ref_id'     => $permohonan->permohonan_id,
+                    'caption'    => $file->getClientOriginalName(),
+                    'mime_type'  => $file->getClientMimeType(),
+                    'sort_order' => 0
                     ]);
                 }
             }
@@ -153,8 +161,8 @@ class PermohonanSuratController extends Controller
 
         // Hapus file fisik dan record di multiuploads
         $files = Multiuploads::where('ref_table', 'permohonan_surat')->where('ref_id', $id)->get();
-        foreach($files as $file){
-            if(File::exists(public_path('uploads/' . $file->filename))){
+        foreach ($files as $file) {
+            if (File::exists(public_path('uploads/' . $file->filename))) {
                 File::delete(public_path('uploads/' . $file->filename));
             }
             $file->delete();
@@ -173,7 +181,7 @@ class PermohonanSuratController extends Controller
         $file = Multiuploads::findOrFail($id);
 
         // Hapus file fisik
-        if(File::exists(public_path('uploads/' . $file->filename))){
+        if (File::exists(public_path('uploads/' . $file->filename))) {
             File::delete(public_path('uploads/' . $file->filename));
         }
 

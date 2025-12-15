@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\BerkasController;
+use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\PermohonanSuratController;
 
@@ -54,6 +56,8 @@ Route::group(['middleware' => ['checkislogin']], function () {
         Route::resource('warga', WargaController::class)->except(['index', 'show']);
         Route::resource('jenis-surat', JenisSuratController::class)->except(['index', 'show']);
         Route::resource('permohonan-surat', PermohonanSuratController::class)->except(['index', 'show']);
+        Route::resource('berkas', BerkasController::class);
+        Route::resource('riwayat', RiwayatController::class);
         Route::get('permohonan-surat/download/{id}', [PermohonanSuratController::class, 'downloadFile'])
         ->name('permohonan-surat.download');
         Route::delete('/permohonan-surat/delete-file/{id}', [PermohonanSuratController::class, 'deleteFile'])->name('uploads.delete');
@@ -63,4 +67,6 @@ Route::group(['middleware' => ['checkislogin']], function () {
     Route::resource('warga', WargaController::class)->only(['index', 'show']);
     Route::resource('jenis-surat', JenisSuratController::class)->only(['index', 'show']);
     Route::resource('permohonan-surat', PermohonanSuratController::class)->only(['index', 'show']);
+    Route::resource('berkas', BerkasController::class);
+    Route::resource('riwayat', RiwayatController::class);
 });
