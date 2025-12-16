@@ -110,15 +110,15 @@
                                         <td class="text-center">
                                             @php
                                                 // Ambil ekstensi file
-                                                $extension = pathinfo($file->filename, PATHINFO_EXTENSION);
+                                                $extension = pathinfo($file->file_url, PATHINFO_EXTENSION);
                                                 $extension = strtolower($extension); // ubah ke huruf kecil
                                             @endphp
 
                                             {{-- Logika Preview --}}
                                             @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
                                                 {{-- Jika Gambar, tampilkan fotonya --}}
-                                                <a href="{{ asset('uploads/' . $file->filename) }}" target="_blank">
-                                                    <img src="{{ asset('uploads/' . $file->filename) }}" alt="Preview"
+                                                <a href="{{ asset('uploads/' . $file->file_url) }}" target="_blank">
+                                                    <img src="{{ asset('uploads/' . $file->file_url) }}" alt="Preview"
                                                         class="img-thumbnail" style="max-height: 100px; max-width: 100px;">
                                                 </a>
                                             @else
@@ -131,15 +131,15 @@
                                         <td>
                                             {{-- Tampilkan nama file asli (tanpa timestamp di depan agar rapi) --}}
                                             {{-- Logika: memotong string setelah tanda strip pertama --}}
-                                            {{ substr($file->filename, strpos($file->filename, '-') + 1) }}
+                                            {{ substr($file->filename, strpos($file->file_url, '-') + 1) }}
                                             <br>
-                                            <small class="text-muted">File asli: {{ $file->filename }}</small>
+                                            <small class="text-muted">File asli: {{ $file->file_url }}</small>
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center align-items-center gap-2">
                                                 {{-- TOMBOL DOWNLOAD --}}
                                                 {{-- Tambahkan class 'd-inline-flex align-items-center' agar icon dan text rapi --}}
-                                                <a href="{{ route('permohonan-surat.download', $file->id) }}"
+                                                <a href="{{ route('permohonan-surat.download', $file->media_id) }}"
                                                     class="btn btn-success btn-sm d-inline-flex align-items-center"
                                                     title="Download File" style="height: 34px;"> {{-- Memaksa tinggi tombol sama --}}
                                                     <i data-feather="download" class="me-1"
@@ -148,7 +148,7 @@
 
                                                 {{-- TOMBOL HAPUS --}}
                                                 @if ($permohonan->status == 'Diajukan' || $permohonan->status == 'Diproses')
-                                                    <form action="{{ route('uploads.delete', $file->id) }}"
+                                                    <form action="{{ route('uploads.delete', $file->media_id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')

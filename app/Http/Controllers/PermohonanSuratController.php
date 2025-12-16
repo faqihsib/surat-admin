@@ -160,7 +160,7 @@ class PermohonanSuratController extends Controller
         $permohonan = PermohonanSurat::findOrFail($id);
 
         // Hapus file fisik dan record di multiuploads
-        $files = Multiuploads::where('ref_table', 'permohonan_surat')->where('ref_id', $id)->get();
+        $files = Media::where('ref_table', 'permohonan_surat')->where('ref_id', $id)->get();
         foreach ($files as $file) {
             if (File::exists(public_path('uploads/' . $file->filename))) {
                 File::delete(public_path('uploads/' . $file->filename));
@@ -178,7 +178,7 @@ class PermohonanSuratController extends Controller
      */
     public function deleteFile($id)
     {
-        $file = Multiuploads::findOrFail($id);
+        $file = Media::findOrFail($id);
 
         // Hapus file fisik
         if (File::exists(public_path('uploads/' . $file->filename))) {
@@ -194,15 +194,15 @@ class PermohonanSuratController extends Controller
     public function downloadFile($id)
     {
         // Cari data file berdasarkan ID di tabel multiuploads
-        $file = Multiuploads::findOrFail($id);
+        $file = Media::findOrFail($id);
 
         // Tentukan lokasi file fisik
-        $filePath = public_path('uploads/' . $file->filename);
+        $filePath = public_path('uploads/' . $file->file_url);
 
         // Cek apakah file fisik ada di server
         if (file_exists($filePath)) {
             // Lakukan proses download
-            return response()->download($filePath, $file->filename);
+            return response()->download($filePath, $file->file_url);
         } else {
             // Jika file fisik hilang/terhapus manual
             return back()->with('error', 'File fisik tidak ditemukan di server!');
