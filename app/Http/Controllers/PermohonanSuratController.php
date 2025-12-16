@@ -89,7 +89,7 @@ class PermohonanSuratController extends Controller
         $permohonan = PermohonanSurat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
 
         // SOLUSI ERROR: Kita ambil data file dari tabel multiuploads
-        $files = Multiuploads::where('ref_table', 'permohonan_surat')
+        $files = Media::where('ref_table', 'permohonan_surat')
                              ->where('ref_id', $id)
                              ->get();
 

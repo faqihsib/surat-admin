@@ -133,24 +133,3 @@
     </div>
     {{-- end main content --}}
 @endsection
-
-<style>
-.btn-group {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-}
-
-.btn-group .btn-sm {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-}
-
-.btn-group form {
-    margin: 0;
-    display: flex;
-}
-</style>
