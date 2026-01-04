@@ -9,24 +9,7 @@ use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\PermohonanSuratController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
-//auth (login & logout)
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
-//Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
-//Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-
-//
-//Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
-// Route::resource('user', UserController::class);
-// Route::resource('warga', WargaController::class);
-// Route::resource('jenis-surat', JenisSuratController::class);
-// Route::resource('permohonan-surat', PermohonanSuratController::class);
-
 
 // Auth Routes (manual karena resource tidak cocok untuk auth)
 Route::get('/login', [AuthController::class, 'index'])->name('auth.login');
@@ -35,10 +18,6 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('auth.reg
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::get('/about', [AdminController::class, 'about'])->name('admin.about');
-
-//untuk multiupload files
-//Route::delete('/upload/delete/{id}', [PermohonanSuratController::class, 'deleteFile'])->name('uploads.delete');
-
 
 //middleware
 Route::group(['middleware' => ['checkislogin']], function () {
@@ -67,6 +46,6 @@ Route::group(['middleware' => ['checkislogin']], function () {
     Route::resource('warga', WargaController::class)->only(['index', 'show']);
     Route::resource('jenis-surat', JenisSuratController::class)->only(['index', 'show']);
     Route::resource('permohonan-surat', PermohonanSuratController::class)->only(['index', 'show']);
-    Route::resource('berkas', BerkasController::class);
-    Route::resource('riwayat', RiwayatController::class);
+    Route::resource('berkas', BerkasController::class)->only(['index', 'show']);
+    Route::resource('riwayat', RiwayatController::class)->only(['index', 'show']);
 });

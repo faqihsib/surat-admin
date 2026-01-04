@@ -42,7 +42,7 @@ class BerkasController extends Controller
         $berkas = BerkasPersyaratan::create([
             'permohonan_id' => $request->permohonan_id,
             'nama_berkas' => $request->nama_berkas,
-            'valid' => 0 // Default belum valid
+            'valid' => 0
         ]);
 
         if ($request->hasFile('file')) {
@@ -50,12 +50,11 @@ class BerkasController extends Controller
             $filename = time() . '-' . $file->getClientOriginalName();
             $file->move(public_path('uploads'), $filename);
 
-            // SIMPAN KE MEDIA (Otomatis Caption & MimeType)
             Media::create([
                 'ref_table'  => 'berkas_persyaratan',
                 'ref_id'     => $berkas->berkas_id,
                 'file_url'   => $filename,
-                'caption'    => $request->nama_berkas, // Caption ambil dari nama berkas inputan
+                'caption'    => $request->nama_berkas,
                 'mime_type'  => $file->getClientMimeType(),
                 'sort_order' => 0
             ]);
